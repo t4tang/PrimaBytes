@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>C:\Users\Developer01\Documents\My Projects\Publish</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/EnvDTE.dll">
+      <publishTime>10/22/2009 19:51:18</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>09/01/2017 17:41:30</publishTime>
+    </File>
+    <File Include="bin/PRIMA_HRIS.dll">
+      <publishTime>07/04/2024 18:31:19</publishTime>
+    </File>
+    <File Include="bin/stdole.dll">
+      <publishTime>07/07/2015 00:51:38</publishTime>
+    </File>
+    <File Include="bin/Telerik.Web.Design.dll">
+      <publishTime>05/15/2018 11:29:12</publishTime>
+    </File>
+    <File Include="bin/Telerik.Web.Spreadsheet.dll">
+      <publishTime>05/16/2018 03:35:14</publishTime>
+    </File>
+    <File Include="bin/Telerik.Web.UI.dll">
+      <publishTime>05/15/2018 11:29:12</publishTime>
+    </File>
+    <File Include="bin/Telerik.Web.UI.Skins.dll">
+      <publishTime>05/15/2018 11:29:12</publishTime>
+    </File>
+    <File Include="bin/Telerik.Windows.Documents.Core.dll">
+      <publishTime>05/11/2018 23:47:00</publishTime>
+    </File>
+    <File Include="bin/Telerik.Windows.Documents.Flow.dll">
+      <publishTime>05/11/2018 23:47:14</publishTime>
+    </File>
+    <File Include="bin/Telerik.Windows.Documents.Spreadsheet.dll">
+      <publishTime>05/11/2018 23:47:24</publishTime>
+    </File>
+    <File Include="bin/Telerik.Windows.Documents.Spreadsheet.FormatProviders.OpenXml.dll">
+      <publishTime>05/11/2018 23:47:26</publishTime>
+    </File>
+    <File Include="bin/Telerik.Windows.Zip.dll">
+      <publishTime>05/11/2018 23:46:58</publishTime>
+    </File>
+    <File Include="Default.aspx">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="Grid.aspx">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="Home/Login.aspx">
+      <publishTime>07/08/2024 09:48:32</publishTime>
+    </File>
+    <File Include="images/Chrysanthemum.jpg">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="images/Desert.jpg">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="images/Hydrangeas.jpg">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="images/Jellyfish.jpg">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="images/Koala.jpg">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="images/Lighthouse.jpg">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="images/logo.png">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="images/Penguins.jpg">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="images/Thumbnails/Chrysanthemum.jpg">
+      <publishTime>07/04/2024 12:04:22</publishTime>
+    </File>
+    <File Include="images/Thumbnails/Desert.jpg">
+      <publishTime>07/04/2024 12:04:22</publishTime>
+    </File>
+    <File Include="images/Thumbnails/Hydrangeas.jpg">
+      <publishTime>07/04/2024 12:04:22</publishTime>
+    </File>
+    <File Include="images/Thumbnails/Jellyfish.jpg">
+      <publishTime>07/04/2024 12:04:22</publishTime>
+    </File>
+    <File Include="images/Thumbnails/Koala.jpg">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="images/Thumbnails/Lighthouse.jpg">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="images/Thumbnails/Penguins.jpg">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="images/Thumbnails/Tulips.jpg">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="images/Tulips.jpg">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="ListView.aspx">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="MasterPage.Master">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="MasterPageSingleMenu.Master">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="PrecompiledApp.config">
+      <publishTime>07/04/2024 18:31:20</publishTime>
+    </File>
+    <File Include="scripts/scripts.js">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="styles/base.css">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="styles/default.css">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="styles/grid.css">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="styles/listView.css">
+      <publishTime>07/04/2024 12:04:23</publishTime>
+    </File>
+    <File Include="web.config">
+      <publishTime>07/04/2024 18:31:19</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

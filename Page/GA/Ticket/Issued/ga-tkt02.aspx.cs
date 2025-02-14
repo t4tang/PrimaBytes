@@ -1,0 +1,482 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using Telerik.Web.UI;
+using PRIMA_HRIS.Class;
+
+namespace PRIMA_HRIS.Page.GA.Ticket.Issued
+{
+    public partial class ga_tkt02 : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(db_connection.koneksi);
+        SqlDataAdapter sda = new SqlDataAdapter();
+        SqlCommand cmd = new SqlCommand();
+
+        private const int ItemsPerRequest = 10;
+        private static string selected_route_code = null;
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                dtp_from.SelectedDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                dtp_to.SelectedDate = DateTime.Now;
+                
+                Session["action"] = "firstLoad";
+                Session["TableDetail"] = null;
+                Session["actionDetail"] = null;
+                Session["actionHeader"] = null;
+            }
+        }
+        protected void RadAjaxManager1_AjaxRequest(object sender, AjaxRequestEventArgs e)
+        {
+            try
+            {
+                if (e.Argument == "Rebind")
+                {
+                    RadGrid1.MasterTableView.SortExpressions.Clear();
+                    RadGrid1.MasterTableView.GroupByExpressions.Clear();
+                    RadGrid1.Rebind();
+                    RadGrid1.MasterTableView.Items[0].Selected = true;
+
+                }
+                else if (e.Argument == "RebindAndNavigate")
+                {
+                    RadGrid1.MasterTableView.SortExpressions.Clear();
+                    RadGrid1.MasterTableView.GroupByExpressions.Clear();
+                    RadGrid1.DataSource = GetDataTable(string.Format("{0:dd/MM/yyyy}", dtp_from.SelectedDate), string.Format("{0:dd/MM/yyyy}", dtp_to.SelectedDate));
+                    RadGrid1.DataBind();
+                    RadGrid1.MasterTableView.CurrentPageIndex = RadGrid1.MasterTableView.PageCount - 1;
+
+                    RadGrid1.MasterTableView.Items[RadGrid1.Items.Count - 1].Selected = true;
+
+                    Session["action"] = "list";
+                }
+            }
+            catch (Exception ex)
+            {
+                RadWindowManager2.RadAlert(ex.Message, 500, 200, "Error", "callBackFn", "~/Images/error.png");
+            }
+        }
+        public DataTable GetDataTable(string date1, string date2)
+        {
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Connection = con;
+            cmd.CommandText = "spGetTicketIssued";
+            cmd.Parameters.AddWithValue("@date", date1);
+            cmd.Parameters.AddWithValue("@todate", date2);
+            cmd.CommandTimeout = 0;
+            cmd.ExecuteNonQuery();
+            sda = new SqlDataAdapter(cmd);
+
+            DataTable DT = new DataTable();
+
+            try
+            {
+                sda.Fill(DT);
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return DT;
+        }
+        protected void RadGrid1_NeedDataSource(object sender, Telerik.Web.UI.GridNeedDataSourceEventArgs e)
+        {
+            (sender as RadGrid).DataSource = GetDataTable(string.Format("{0:dd/MM/yyyy}", dtp_from.SelectedDate), string.Format("{0:dd/MM/yyyy}", dtp_to.SelectedDate));
+        }
+        
+        protected void RadGrid1_DeleteCommand(object sender, Telerik.Web.UI.GridCommandEventArgs e)
+        {
+            try
+            {
+                var trCode = ((GridDataItem)e.Item).GetDataKeyValue("trCode");
+
+                con.Open();
+                cmd = new SqlCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE TrTicketIssued SET recordStatus = 'D', changeBy = @uid, changeDate = GETDATE() WHERE trCode = @trCode";
+                cmd.Parameters.AddWithValue("@trCode", trCode);
+                cmd.Parameters.AddWithValue("@uid", Request.Cookies["authcookie"]["uid"]);
+                cmd.ExecuteNonQuery();
+                con.Close();
+
+                notif.Text = "DELETED SUCCESSFULLY";
+                notif.Title = "Notification";
+                notif.Show("Deleted Successful");
+            }
+            catch (Exception ex)
+            {
+                con.Close();
+                RadWindowManager2.RadAlert(ex.Message, 500, 200, "Error", "");
+                e.Canceled = true;
+            }
+        }
+
+        protected void RadGrid1_ItemCommand(object sender, Telerik.Web.UI.GridCommandEventArgs e)
+        {
+            if (e.CommandName == "Edit")
+            {
+                (sender as RadGrid).MasterTableView.IsItemInserted = false;
+                (sender as RadGrid).MasterTableView.Rebind();
+                                
+                Session["actionHeader"] = "headerEdit";
+                //Session["actionDetail"] = null;
+            }
+        }
+
+        protected void RadGrid1_ItemDataBound(object sender, Telerik.Web.UI.GridItemEventArgs e)
+        {
+
+        }
+
+        protected void btn_add_Click(object sender, EventArgs e)
+        {
+            Session["TableDetail"] = null;
+            Session["actionHeader"] = "headerNew";
+            RadGrid1.MasterTableView.ClearEditItems();
+            RadGrid1.MasterTableView.IsItemInserted = true;
+            RadGrid1.MasterTableView.Rebind();
+        }
+
+        protected void btn_refresh_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            RadGrid1.DataSource = GetDataTable(string.Format("{0:dd/MM/yyyy}", dtp_from.SelectedDate), string.Format("{0:dd/MM/yyyy}", dtp_to.SelectedDate));
+            RadGrid1.DataBind();
+        }
+
+        protected void cb_status_prm_SelectedIndexChanged(object sender, Telerik.Web.UI.RadComboBoxSelectedIndexChangedEventArgs e)
+        {
+
+        }
+
+        protected void cb_status_prm_ItemsRequested(object sender, Telerik.Web.UI.RadComboBoxItemsRequestedEventArgs e)
+        {
+
+        }
+
+        protected void cb_project_prm_ItemsRequested(object sender, Telerik.Web.UI.RadComboBoxItemsRequestedEventArgs e)
+        {
+
+        }
+
+        protected void cb_project_prm_SelectedIndexChanged(object sender, Telerik.Web.UI.RadComboBoxSelectedIndexChangedEventArgs e)
+        {
+
+        }
+
+        protected void cb_project_prm_PreRender(object sender, EventArgs e)
+        {
+
+        }
+        private bool cekTrStatus(string tr_code)
+        {
+            bool is_used = false;
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                con.Open();
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                cmd.CommandText = "SELECT * FROM TrTicketIssued WHERE reffNo = '" + tr_code + "' AND recordStatus = 'A' ";
+                SqlDataReader dr;
+                dr = null;
+                try
+                {
+                    dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        is_used = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException("Error :", ex);
+                }
+                finally
+                {
+                    con.Close();
+                }
+                return is_used;
+
+            }
+
+        }
+        protected void btnSave_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            GridEditableItem item = (GridEditableItem)btn.NamingContainer;
+
+            RadComboBox cb_reff = (RadComboBox)item.FindControl("cb_reff");
+            RadLabel lbl_tr_code = (RadLabel)item.FindControl("lbl_tr_code");
+            RadNumericTextBox txt_amount = (RadNumericTextBox)item.FindControl("txt_amount");
+            RadTextBox txt_invoice_no = (RadTextBox)item.FindControl("txt_invoice_no");
+            RadDatePicker dtp_trDate = (RadDatePicker)item.FindControl("dtp_trDate");
+            RadDatePicker dtp_billing_date = (RadDatePicker)item.FindControl("dtp_billing_date");
+            RadTextBox txt_travel = (RadTextBox)item.FindControl("txt_travel");
+            RadTextBox txt_remark = (RadTextBox)item.FindControl("txt_remark");
+
+            Button btnCancel = (Button)item.FindControl("btnCancel");
+
+            long maxNo;
+            string run = null;
+            string trDate = string.Format("{0:dd/MM/yyyy}", dtp_trDate.SelectedDate);
+
+            if (Session["actionHeader"].ToString() == "headerEdit")
+            {
+                run = lbl_tr_code.Text;
+
+                //bool used = false;
+                //used = cekTrStatus(run);
+                //if (used)
+                //{
+                //    string msg = run + " tidak dapat diedit lagi karena telah digunakan di transaksi lain";
+                //    ScriptManager.RegisterStartupScript(this.Page, Page.GetType(), "Allert", "allertFn('" + msg + "')", true);
+                //    return;
+                //}
+            }
+            else
+            {
+                con.Open();
+                SqlDataReader sdr;
+                cmd = new SqlCommand("SELECT ISNULL ( MAX ( RIGHT ( TrTicketIssued.trCode , 4 ) ) , 0 ) + 1 AS maxNo " +
+                    "FROM TrTicketIssued WHERE LEFT(TrTicketIssued.trCode, 4) ='TI01' " +
+                    "AND SUBSTRING(TrTicketIssued.trCode, 5, 2) = SUBSTRING('" + trDate + "', 9, 2) " +
+                    "AND SUBSTRING(TrTicketIssued.trCode, 7, 2) = SUBSTRING('" + trDate + "', 4, 2) ", con);
+                sdr = cmd.ExecuteReader();
+                if (sdr.HasRows == false)
+                {
+                    //throw new Exception();
+                    run = "TI01" + dtp_trDate.SelectedDate.Value.Year + dtp_trDate.SelectedDate.Value.Month + "0001";
+                }
+                else if (sdr.Read())
+                {
+                    maxNo = Convert.ToInt32(sdr[0].ToString());
+                    run = "TI01" +
+                        (dtp_trDate.SelectedDate.Value.Year.ToString()).Substring(dtp_trDate.SelectedDate.Value.Year.ToString().Length - 2) +
+                        ("0000" + dtp_trDate.SelectedDate.Value.Month).Substring(("0000" + dtp_trDate.SelectedDate.Value.Month).Length - 2, 2) +
+                        ("0000" + maxNo).Substring(("0000" + maxNo).Length - 4, 4);
+                }
+                con.Close();
+            }
+
+            lbl_tr_code.Text = run;
+
+            try
+            {
+                con.Open();
+                cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = con;
+                cmd.CommandText = "spSaveTicketIssued";
+                cmd.Parameters.AddWithValue("@trCode", run);
+                cmd.Parameters.AddWithValue("@trDate", string.Format("{0:yyyy-MM-dd}", dtp_trDate.SelectedDate.Value));
+                cmd.Parameters.AddWithValue("@reffNo", cb_reff.Text);
+                cmd.Parameters.AddWithValue("@invNo", txt_invoice_no.Text);
+                cmd.Parameters.AddWithValue("@amount", txt_amount.Value);
+                cmd.Parameters.AddWithValue("@billingDate", string.Format("{0:yyyy-MM-dd}", dtp_billing_date.SelectedDate.Value));
+                cmd.Parameters.AddWithValue("@travel", txt_travel.Text);
+                cmd.Parameters.AddWithValue("@remark", txt_remark.Text);
+                cmd.Parameters.AddWithValue("@UID", Request.Cookies["authcookie"]["uid"]);
+
+                cmd.ExecuteNonQuery();
+                                
+                ClientScript.RegisterStartupScript(Page.GetType(), "mykey", "CloseAndRebind('navigateToInserted');", true);
+                (sender as Button).Text = "Update";
+                btnCancel.Text = "Close";
+                lbl_tr_code.Text = run;
+
+                notif.Show(run + "Saved");
+                string Message = run + " Data Saved";
+                //ScriptManager.RegisterStartupScript(this.Page, Page.GetType(), "Allert", "allertFn('" + Message + "')", true);
+            }
+            catch (Exception ex)
+            {
+                con.Close();
+                string Message = "Error: " + ex;
+                ScriptManager.RegisterStartupScript(this.Page, Page.GetType(), "Allert", "allertFn('" + Message + "')", true);
+            }
+            finally
+            {
+                con.Close();
+                RadGrid1.MasterTableView.IsItemInserted = false;
+                //notif.Show("Data Saved");
+                RadGrid1.Rebind();
+            }
+
+            //}
+        }
+
+        #region Reff
+        private static DataTable GetReff(string text)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT trCode FROM TrTicketOrder WHERE recordStatus = 'A' AND " +
+                "trCode NOT IN (SELECT reffNo FROM TrTicketIssued WHERE recordStatus = 'A') AND trCode LIKE @text + '%'",
+            ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
+            adapter.SelectCommand.Parameters.AddWithValue("@text", text);
+
+            DataTable data = new DataTable();
+            adapter.Fill(data);
+
+            return data;
+        }
+        protected void cb_reff_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
+        {
+            DataTable data = GetReff(e.Text);
+
+            int itemOffset = e.NumberOfItems;
+            int endOffset = Math.Min(itemOffset + ItemsPerRequest, data.Rows.Count);
+            e.EndOfItems = endOffset == data.Rows.Count;
+
+            for (int i = itemOffset; i < endOffset; i++)
+            {
+                (sender as RadComboBox).Items.Add(new RadComboBoxItem(data.Rows[i]["trCode"].ToString(), data.Rows[i]["trCode"].ToString()));
+            }
+        }
+        
+        #endregion
+
+        #region Employee
+        private static DataTable GetEmployee(string text)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT EmployeeNo FROM v_employee WHERE EmployeeNo LIKE @text + '%'",
+            ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
+            adapter.SelectCommand.Parameters.AddWithValue("@text", text);
+
+            DataTable data = new DataTable();
+            adapter.Fill(data);
+
+            return data;
+        }
+        protected void cb_nik_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
+        {
+            DataTable data = GetEmployee(e.Text);
+
+            int itemOffset = e.NumberOfItems;
+            int endOffset = Math.Min(itemOffset + ItemsPerRequest, data.Rows.Count);
+            e.EndOfItems = endOffset == data.Rows.Count;
+
+            for (int i = itemOffset; i < endOffset; i++)
+            {
+                (sender as RadComboBox).Items.Add(new RadComboBoxItem(data.Rows[i]["EmployeeNo"].ToString(), data.Rows[i]["EmployeeNo"].ToString()));
+            }
+        }
+
+        protected void cb_nik_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
+        {
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT EmployeeNo, EmployeeName, BirthDate, LocationName, PositionName, Hp1, Hp2 FROM v_employee WHERE EmployeeNo = '" + (sender as RadComboBox).Text + "'";
+            //SqlDataReader dr;
+            //dr = cmd.ExecuteReader();
+            //while (dr.Read())
+            //{
+            //    (sender as RadComboBox).SelectedValue = dr["EmployeeNo"].ToString();
+            //}
+            //dr.Close();
+
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            foreach(DataRow dtr in dt.Rows)
+            {
+                RadComboBox cb = (RadComboBox)sender;
+                GridEditableItem item = (GridEditableItem)cb.NamingContainer;
+                //if (Session["actionDetail"].ToString() == "detailNew")
+                //{
+                    RadLabel lbl_EmployeeName = (RadLabel)item.FindControl("lbl_EmployeeName");
+                    RadLabel lbl_posisi = (RadLabel)item.FindControl("lbl_posisi");
+                    RadLabel lbl_lokasi = (RadLabel)item.FindControl("lbl_lokasi");
+                    RadLabel lbl_telp = (RadLabel)item.FindControl("lbl_telp");
+                    RadDatePicker rdp_birthDate = (RadDatePicker)item.FindControl("rdp_birthDate");
+
+                    lbl_EmployeeName.Text = dtr["EmployeeName"].ToString();
+                    lbl_posisi.Text = dtr["PositionName"].ToString();
+                    lbl_lokasi.Text = dtr["LocationName"].ToString();
+                    lbl_telp.Text = dtr["Hp1"].ToString();
+                    rdp_birthDate.SelectedDate = Convert.ToDateTime(dtr["BirthDate"].ToString());
+                //    }
+            }
+            con.Close();
+        }
+
+        protected void cb_nik_PreRender(object sender, EventArgs e)
+        {
+            //con.Open();
+            //cmd = new SqlCommand();
+            //cmd.CommandType = CommandType.Text;
+            //cmd.Connection = con;
+            //cmd.CommandText = "select region_code from ms_jobsite WHERE region_name = '" + (sender as RadComboBox).Text + "'";
+            //SqlDataReader dr;
+            //dr = cmd.ExecuteReader();
+            //while (dr.Read())
+            //    (sender as RadComboBox).SelectedValue = dr["region_code"].ToString();
+            //dr.Close();
+            //con.Close();
+        }
+
+
+        #endregion
+
+        protected void cb_reff_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
+        {
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT trCode, FORMAT(trDate,'dd-MM-yyyy') reffDate, employeeNo, FirstName, DepartmentName, PositionName, " +
+                "LocationName, Hp1, FORMAT(BirthDate,'dd-MM-yyyy') BirthDate, [Route], FORMAT(departureDate,'dd-MM-yyyy') departureDate, remark " +
+                "FROM vTicketOrder WHERE (recordStatus = 'A') AND (trCode = '" + (sender as RadComboBox).Text + "')";
+            
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            foreach (DataRow dtr in dt.Rows)
+            {
+                RadComboBox cb = (RadComboBox)sender;
+                GridEditableItem item = (GridEditableItem)cb.NamingContainer;
+
+                RadLabel lbl_reff_code = (RadLabel)item.FindControl("lbl_reff_code");
+                RadLabel lbl_reff_date = (RadLabel)item.FindControl("lbl_reff_date");
+                RadLabel lbl_route = (RadLabel)item.FindControl("lbl_route");
+                RadLabel lbl_depart_date = (RadLabel)item.FindControl("lbl_depart_date");
+                RadLabel lbl_remark = (RadLabel)item.FindControl("lbl_remark");
+                RadLabel lbl_nik = (RadLabel)item.FindControl("lbl_nik");
+                RadLabel lbl_EmployeeName = (RadLabel)item.FindControl("lbl_EmployeeName");
+                RadLabel lbl_posisi = (RadLabel)item.FindControl("lbl_posisi");
+                RadLabel lbl_lokasi = (RadLabel)item.FindControl("lbl_lokasi");
+                RadLabel lbl_telp = (RadLabel)item.FindControl("lbl_telp");
+                RadLabel lbl_BirthDate = (RadLabel)item.FindControl("lbl_BirthDate");
+
+                lbl_reff_code.Text = dtr["trCode"].ToString();
+                lbl_reff_date.Text = dtr["reffDate"].ToString();
+                lbl_route.Text = dtr["Route"].ToString();
+                lbl_depart_date.Text = dtr["departureDate"].ToString();
+                lbl_remark.Text = dtr["remark"].ToString();
+                lbl_nik.Text = dtr["employeeNo"].ToString();
+                lbl_EmployeeName.Text = dtr["FirstName"].ToString();
+                lbl_posisi.Text = dtr["PositionName"].ToString();
+                lbl_lokasi.Text = dtr["LocationName"].ToString();
+                lbl_telp.Text = dtr["Hp1"].ToString();
+                lbl_BirthDate.Text = dtr["BirthDate"].ToString();
+                //    }
+            }
+            con.Close();
+        }
+    }
+}
