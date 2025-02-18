@@ -168,7 +168,7 @@ namespace PRIMA_HRIS.Page.PA.Employee
             RadTextBox txt_no_hp = (RadTextBox)item.FindControl("txt_no_hp");
             RadTextBox txt_email = (RadTextBox)item.FindControl("txt_email");
             RadTextBox txt_gol_darah = (RadTextBox)item.FindControl("txt_gol_darah");
-            RadTextBox txt_jns_hub_emergency_contak = (RadTextBox)item.FindControl("txt_jns_hub_emergency_contak");
+            //RadTextBox txt_jns_hub_emergency_contak = (RadTextBox)item.FindControl("txt_jns_hub_emergency_contak");
             RadTextBox txt_alamat_kontak_darurat = (RadTextBox)item.FindControl("txt_alamat_kontak_darurat");
             RadTextBox txt_tlp_kontak_darurat = (RadTextBox)item.FindControl("txt_tlp_kontak_darurat");
             RadTextBox txt_ukuran_baju = (RadTextBox)item.FindControl("txt_ukuran_baju");
@@ -198,6 +198,7 @@ namespace PRIMA_HRIS.Page.PA.Employee
             RadComboBox cb_department = (RadComboBox)item.FindControl("cb_department");
             RadComboBox cb_section = (RadComboBox)item.FindControl("cb_section");
             RadComboBox cb_posisi_assign = (RadComboBox)item.FindControl("cb_posisi_assign");
+            RadComboBox cb_jns_hub_emergency_kontak = (RadComboBox)item.FindControl("CB_jns_hub_emergency_kontak");
 
             RadDatePicker dtp_tgl_group = (RadDatePicker)item.FindControl("dtp_tgl_group");
             RadDatePicker dtp_tgl_masuk = (RadDatePicker)item.FindControl("dtp_tgl_masuk");
@@ -287,7 +288,7 @@ namespace PRIMA_HRIS.Page.PA.Employee
                 cmd.Parameters.AddWithValue("@BPJSNo", txt_bpjs_ketenagakerjaan.Text);
                 cmd.Parameters.AddWithValue("@BPJSKesNo", txt_bpjs_kesehatan.Text);
                 cmd.Parameters.AddWithValue("@DapenNo", txt_dapen.Text);
-                cmd.Parameters.AddWithValue("@LocationCode", cb_lokasi.SelectedValue);
+                cmd.Parameters.AddWithValue("@LocationCode", cb_actual.SelectedValue);
                 cmd.Parameters.AddWithValue("@GradeCode", cb_golongan.SelectedValue);
                 cmd.Parameters.AddWithValue("@SubGradeCode", cb_sub_golongan.SelectedValue);
                 cmd.Parameters.AddWithValue("@PositionCode", cb_posisi.SelectedValue);
@@ -355,7 +356,7 @@ namespace PRIMA_HRIS.Page.PA.Employee
                 cmd.Parameters.AddWithValue("@Department", cb_department.SelectedValue);
                 cmd.Parameters.AddWithValue("@Division", cb_divisi.SelectedValue);
                 cmd.Parameters.AddWithValue("@EmergencyContactName", txt_nama_kontak.Text);
-                cmd.Parameters.AddWithValue("@EmergencyContactType", txt_jns_hub_emergency_contak.Text);
+                cmd.Parameters.AddWithValue("@EmergencyContactType", cb_jns_hub_emergency_kontak.Text);
                 cmd.Parameters.AddWithValue("@EmergencyContactAddress", txt_alamat_kontak_darurat.Text);
                 cmd.Parameters.AddWithValue("@EmergencyContactPhone1", txt_tlp_kontak_darurat.Text);
                 cmd.Parameters.AddWithValue("@EmergencyContactPhone2", DBNull.Value);
@@ -714,22 +715,22 @@ namespace PRIMA_HRIS.Page.PA.Employee
         {
             if((sender as RadComboBox).Text == "PRIA")
             {
-                (sender as RadComboBox).SelectedValue = "L";
+                (sender as RadComboBox).SelectedValue = "M";
             }
             else
             {
-                (sender as RadComboBox).SelectedValue = "P";
+                (sender as RadComboBox).SelectedValue = "F";
             }
         }
         protected void cb_jns_kelamin_PreRender(object sender, EventArgs e)
         {
             if ((sender as RadComboBox).Text == "PRIA")
             {
-                (sender as RadComboBox).SelectedValue = "L";
+                (sender as RadComboBox).SelectedValue = "M";
             }
             else
             {
-                (sender as RadComboBox).SelectedValue = "P";
+                (sender as RadComboBox).SelectedValue = "F";
             }
         }
         #endregion
@@ -1586,56 +1587,246 @@ namespace PRIMA_HRIS.Page.PA.Employee
         {
 
         }
-       
 
-        protected void cb_jenjang_temp_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
+        private static DataTable GetPendidikan(string text)
         {
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT EducationCode, EducationDescription FROM MsEducation WHERE (RecordStatus = 'A') " +
+                "AND EducationDescription LIKE @text + '%'",
+            ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
+            adapter.SelectCommand.Parameters.AddWithValue("@text", text);
 
+            DataTable data = new DataTable();
+            adapter.Fill(data);
+
+            return data;
+        }
+        protected void cb_jenjang_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
+        {
+            DataTable data = GetPendidikan(e.Text);
+
+            int itemOffset = e.NumberOfItems;
+            int endOffset = Math.Min(itemOffset + ItemsPerRequest, data.Rows.Count);
+            e.EndOfItems = endOffset == data.Rows.Count;
+
+            for (int i = itemOffset; i < endOffset; i++)
+            {
+                (sender as RadComboBox).Items.Add(new RadComboBoxItem(data.Rows[i]["EducationDescription"].ToString(), data.Rows[i]["EducationDescription"].ToString()));
+            }
         }
 
         protected void cb_jenjang_temp_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
         {
-
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT EducationCode FROM MsEducation WHERE EducationDescription = '" + (sender as RadComboBox).Text + "'";
+            SqlDataReader dr;
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                (sender as RadComboBox).SelectedValue = dr["EducationCode"].ToString();
+            }
+            dr.Close();
+            con.Close();
         }
 
-        protected void cb_kota_edit_temp_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
+        protected void cb_jenjang_temp_PreRender(object sender, EventArgs e)
         {
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT EducationCode FROM MsEducation WHERE EducationDescription = '" + (sender as RadComboBox).Text + "'";
+            SqlDataReader dr;
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                (sender as RadComboBox).SelectedValue = dr["EducationCode"].ToString();
+            }
+            dr.Close();
+            con.Close();
+        }
+        private static DataTable GetKota(string text)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT CityCode, CityName FROM MSCity WHERE (RecordStatus = 'A') AND CityName LIKE @text + '%'",
+            ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
+            adapter.SelectCommand.Parameters.AddWithValue("@text", text);
 
+            DataTable data = new DataTable();
+            adapter.Fill(data);
+
+            return data;
+        }
+        protected void cb_kota_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
+        {
+            DataTable data = GetKota(e.Text);
+
+            int itemOffset = e.NumberOfItems;
+            int endOffset = Math.Min(itemOffset + ItemsPerRequest, data.Rows.Count);
+            e.EndOfItems = endOffset == data.Rows.Count;
+
+            for (int i = itemOffset; i < endOffset; i++)
+            {
+                (sender as RadComboBox).Items.Add(new RadComboBoxItem(data.Rows[i]["CityName"].ToString(), data.Rows[i]["CityName"].ToString()));
+            }
         }
 
         protected void cb_kota_edit_temp_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
         {
-
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT CityCode FROM MSCity WHERE CityName = '" + (sender as RadComboBox).Text + "'";
+            SqlDataReader dr;
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                (sender as RadComboBox).SelectedValue = dr["CityCode"].ToString();                
+            }
+            dr.Close();
+            con.Close();
         }
-
-        protected void cb_kota_insert_temp_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
-        {
-
-        }
-
+        
         protected void cb_kota_insert_temp_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
         {
-
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT CityCode FROM MSCity WHERE CityName = '" + (sender as RadComboBox).Text + "'";
+            SqlDataReader dr;
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                (sender as RadComboBox).SelectedValue = dr["CityCode"].ToString();
+            }
+            dr.Close();
+            con.Close();
         }
 
-        protected void cb_status_edit_temp_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
-        {
 
+        private static DataTable GetStsPend(string text)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT EducationStatusCode, EducationStatusDescription FROM MsEducationStatus WHERE (RecordStatus = 'A') AND EducationStatusDescription LIKE @text + '%'",
+            ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
+            adapter.SelectCommand.Parameters.AddWithValue("@text", text);
+
+            DataTable data = new DataTable();
+            adapter.Fill(data);
+
+            return data;
+        }
+        protected void cb_status_temp_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
+        {
+            DataTable data = GetStsPend(e.Text);
+
+            int itemOffset = e.NumberOfItems;
+            int endOffset = Math.Min(itemOffset + ItemsPerRequest, data.Rows.Count);
+            e.EndOfItems = endOffset == data.Rows.Count;
+
+            for (int i = itemOffset; i < endOffset; i++)
+            {
+                (sender as RadComboBox).Items.Add(new RadComboBoxItem(data.Rows[i]["EducationStatusDescription"].ToString(), data.Rows[i]["EducationStatusDescription"].ToString()));
+            }
         }
 
         protected void cb_status_edit_temp_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
         {
-
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT EducationStatusCode FROM MsEducationStatus WHERE EducationStatusDescription = '" + (sender as RadComboBox).Text + "'";
+            SqlDataReader dr;
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                (sender as RadComboBox).SelectedValue = dr["EducationStatusCode"].ToString();
+            }
+            dr.Close();
+            con.Close();
         }
 
-        protected void cb_status_insert_temp_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
+        protected void cb_status_temp_PreRender(object sender, EventArgs e)
         {
-
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT EducationStatusCode FROM MsEducationStatus WHERE EducationStatusDescription = '" + (sender as RadComboBox).Text + "'";
+            SqlDataReader dr;
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                (sender as RadComboBox).SelectedValue = dr["EducationStatusCode"].ToString();
+            }
+            dr.Close();
+            con.Close();
         }
-
         protected void cb_status_insert_temp_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
         {
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT EducationStatusCode FROM MsEducationStatus WHERE EducationStatusDescription = '" + (sender as RadComboBox).Text + "'";
+            SqlDataReader dr;
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                (sender as RadComboBox).SelectedValue = dr["EducationStatusCode"].ToString();
+            }
+            dr.Close();
+            con.Close();
+        }
 
+        protected void rg_pendidikan_InsertCommand(object sender, GridCommandEventArgs e)
+        {
+            GridEditableItem item = (GridEditableItem)e.Item;
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "INSERT INTO TrEmpEducation(EmployeeNo, EducationCode, MajorCode, InstitutionName, InstitutionCity, " +
+                               " EducationStatusCode, ChangeNo, CreateDate, CreateBy, ChangeDate, ChangeBy) " +
+                               " VALUES (@EmployeeNo,@EducationCode,@MajorCode,@InstitutionName,@InstitutionCity, " +
+                               " @EducationStatusCode, 0, GETDATE(),@UID, GETDATE(),@UID)";
+            cmd.Parameters.AddWithValue("@EmployeeNo", selected_nik);
+            cmd.Parameters.AddWithValue("@EducationCode", (item.FindControl("cb_jenjang_insert_temp") as RadComboBox).SelectedValue);
+            cmd.Parameters.AddWithValue("@MajorCode", (item.FindControl("cb_jurusan_insert_temp") as RadComboBox).SelectedValue);
+            cmd.Parameters.AddWithValue("@InstitutionName", (item.FindControl("txt_lembaga_insert_temp") as RadTextBox).Text);
+            cmd.Parameters.AddWithValue("@InstitutionCity", (item.FindControl("cb_kota_insert_temp") as RadComboBox).SelectedValue);
+            cmd.Parameters.AddWithValue("@EducationStatusCode", (item.FindControl("cb_status_insert_temp") as RadComboBox).SelectedValue);
+            cmd.Parameters.AddWithValue("@UID", Request.Cookies["authcookie"]["uName"]);
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
+        protected void rg_pendidikan_UpdateCommand(object sender, GridCommandEventArgs e)
+        {
+            if (e.Item is GridEditableItem)
+            {
+                GridEditableItem item = (GridEditableItem)e.Item;
+                con.Open();
+                cmd = new SqlCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE TrEmpEducation SET EducationCode = @EducationCode, MajorCode = @MajorCode, InstitutionName = @InstitutionName, " +
+                               "InstitutionCity = @InstitutionCity, EducationStatusCode = @EducationStatusCode, ChangeBy = @UID, ChangeDate = GETDATE(), ChangeNo = ChangeNo + 1 " +
+                               "WHERE (EmployeeNo = @EmployeeNo) AND (ID = @ID)";
+                cmd.Parameters.AddWithValue("@EmployeeNo", selected_nik);
+                cmd.Parameters.AddWithValue("@EducationCode", (item.FindControl("cb_jenjang_edit_temp") as RadComboBox).SelectedValue);
+                cmd.Parameters.AddWithValue("@MajorCode", (item.FindControl("cb_jurusan_edit_temp") as RadComboBox).SelectedValue);
+                cmd.Parameters.AddWithValue("@InstitutionName", (item.FindControl("txt_lembaga_edit_temp") as RadTextBox).Text);
+                cmd.Parameters.AddWithValue("@InstitutionCity", (item.FindControl("cb_kota_edit_temp") as RadComboBox).SelectedValue);
+                cmd.Parameters.AddWithValue("@EducationStatusCode", (item.FindControl("cb_status_edit_temp") as RadComboBox).SelectedValue);
+                cmd.Parameters.AddWithValue("@UID", Request.Cookies["authcookie"]["uName"]);
+                cmd.Parameters.AddWithValue("@ID", ((GridDataItem)e.Item).GetDataKeyValue("ID"));
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
         }
         #endregion
         #region Training
@@ -1676,9 +1867,62 @@ namespace PRIMA_HRIS.Page.PA.Employee
             }
         }
 
+        protected void rg_training_InsertCommand(object sender, GridCommandEventArgs e)
+        {
+            GridEditableItem item = (GridEditableItem)e.Item;
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "INSERT INTO TrEmpTraining(EmployeeNo, TrainingNo, TrainingName, InstitutionName, " +
+                               "TrainingDate, ChangeNo, CreateDate, CreateBy, ChangeDate, ChangeBy) " +
+                               "VALUES (@EmployeeNo, @TrainingNo, @TrainingName, @InstitutionName, " +
+                               "@TrainingDate, 0, GETDATE(), @UID, GETDATE(), @UID)";
+            cmd.Parameters.AddWithValue("@EmployeeNo", selected_nik);
+            cmd.Parameters.AddWithValue("@TrainingNo", (item.FindControl("txt_training_ke_insert_temp") as RadTextBox).Text);
+            cmd.Parameters.AddWithValue("@TrainingName", (item.FindControl("txt_nama_training_insert_temp") as RadTextBox).Text);
+            cmd.Parameters.AddWithValue("@InstitutionName", (item.FindControl("txt_lembaga_training_insert_temp") as RadTextBox).Text);
+            cmd.Parameters.AddWithValue("@TrainingDate", (item.FindControl("dtp_tanggal_training_insert_temp") as RadDatePicker).SelectedDate.Value);
+            cmd.Parameters.AddWithValue("@UID", Request.Cookies["authcookie"]["uName"]);
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
+        protected void rg_training_UpdateCommand(object sender, GridCommandEventArgs e)
+        {
+            if (e.Item is GridEditableItem)
+            {
+                GridEditableItem item = (GridEditableItem)e.Item;
+                con.Open();
+                cmd = new SqlCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE TrEmpTraining SET EmployeeNo = @EmployeeNo, TrainingNo = @TrainingNo, TrainingName = @TrainingName, " +
+                               "InstitutionName = @InstitutionName, TrainingDate = @TrainingDate, ChangeNo = ChangeNo + 1, " +
+                               "ChangeDate = GETDATE(), ChangeBy = @UID WHERE  (ID = @ID)";
+                cmd.Parameters.AddWithValue("@EmployeeNo", selected_nik);
+                cmd.Parameters.AddWithValue("@TrainingNo", (item.FindControl("txt_training_ke_edit_temp") as RadTextBox).Text);
+                cmd.Parameters.AddWithValue("@TrainingName", (item.FindControl("txt_nama_training_edit_temp") as RadTextBox).Text);
+                cmd.Parameters.AddWithValue("@InstitutionName", (item.FindControl("txt_lembaga_training_edit_temp") as RadTextBox).Text);
+                cmd.Parameters.AddWithValue("@TrainingDate", (item.FindControl("dtp_tanggal_training_edit_temp") as RadDatePicker).SelectedDate.Value);
+                cmd.Parameters.AddWithValue("@UID", Request.Cookies["authcookie"]["uName"]);
+                cmd.Parameters.AddWithValue("@ID", ((GridDataItem)e.Item).GetDataKeyValue("ID"));
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
         protected void rg_training_DeleteCommand(object sender, GridCommandEventArgs e)
         {
-
+            GridEditableItem item = (GridEditableItem)e.Item;
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "DELETE FROM TrEmpTraining WHERE  (ID = @ID)";
+            cmd.Parameters.AddWithValue("@ID", ((GridDataItem)e.Item).GetDataKeyValue("ID"));
+            cmd.ExecuteNonQuery();
+            con.Close();
         }
         #endregion
         #region Lisensi
@@ -1719,9 +1963,64 @@ namespace PRIMA_HRIS.Page.PA.Employee
             }
         }
 
+        protected void rg_lisensi_InsertCommand(object sender, GridCommandEventArgs e)
+        {
+            GridEditableItem item = (GridEditableItem)e.Item;
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "INSERT INTO TrEmpLicense(EmployeeNo, LicenseNo, LicenseName, InstitutionName, LicenseDate, LicenseCode, " +
+                               "ChangeNo, CreateDate, CreateBy, ChangeDate, ChangeBy) " +
+                               "VALUES (@EmployeeNo, @LicenseNo, @LicenseName, @InstitutionName, @LicenseDate, @LicenseCode," +
+                               "0, GETDATE(), @UID, GETDATE(), @UID)";
+            cmd.Parameters.AddWithValue("@EmployeeNo", selected_nik);
+            cmd.Parameters.AddWithValue("@LicenseNo", (item.FindControl("txt_lisensi_ke_insert_temp") as RadTextBox).Text);
+            cmd.Parameters.AddWithValue("@LicenseName", (item.FindControl("txt_nama_lisensi_insert_temp") as RadTextBox).Text);
+            cmd.Parameters.AddWithValue("@InstitutionName", (item.FindControl("txt_lembaga_lisensi_insert_temp") as RadTextBox).Text);
+            cmd.Parameters.AddWithValue("@LicenseDate", (item.FindControl("dtp_tanggal_lisensi_insert_temp") as RadDatePicker).SelectedDate.Value);
+            cmd.Parameters.AddWithValue("@LicenseCode", (item.FindControl("txt_no_lisensi_insert_temp") as RadTextBox).Text);
+            cmd.Parameters.AddWithValue("@UID", Request.Cookies["authcookie"]["uName"]);
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
+        protected void rg_lisensi_UpdateCommand(object sender, GridCommandEventArgs e)
+        {
+            if (e.Item is GridEditableItem)
+            {
+                GridEditableItem item = (GridEditableItem)e.Item;
+                con.Open();
+                cmd = new SqlCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE TrEmpLicense SET EmployeeNo = @EmployeeNo, LicenseNo = @LicenseNo, LicenseName = @LicenseName, " +
+                               "InstitutionName = @InstitutionName, LicenseDate = @LicenseDate, LicenseCode = @LicenseCode, " +
+                               "ChangeNo = ChangeNo + 1, ChangeDate = GETDATE(), ChangeBy = @UID WHERE  (ID = @ID)";
+                cmd.Parameters.AddWithValue("@EmployeeNo", selected_nik);
+                cmd.Parameters.AddWithValue("@LicenseNo", (item.FindControl("txt_lisensi_ke_edit_temp") as RadTextBox).Text);
+                cmd.Parameters.AddWithValue("@LicenseName", (item.FindControl("txt_nama_lisensi_edit_temp") as RadTextBox).Text);
+                cmd.Parameters.AddWithValue("@InstitutionName", (item.FindControl("txt_lembaga_lisensi_edit_temp") as RadTextBox).Text);
+                cmd.Parameters.AddWithValue("@LicenseDate", (item.FindControl("dtp_tanggal_lisensi_edit_temp") as RadDatePicker).SelectedDate.Value);
+                cmd.Parameters.AddWithValue("@LicenseCode", (item.FindControl("txt_no_lisensi_edit_temp") as RadTextBox).Text);
+                cmd.Parameters.AddWithValue("@UID", Request.Cookies["authcookie"]["uName"]);
+                cmd.Parameters.AddWithValue("@ID", ((GridDataItem)e.Item).GetDataKeyValue("ID"));
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
         protected void rg_lisensi_DeleteCommand(object sender, GridCommandEventArgs e)
         {
-
+            GridEditableItem item = (GridEditableItem)e.Item;
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "DELETE FROM TrEmpLicense WHERE  (ID = @ID)";
+            cmd.Parameters.AddWithValue("@ID", ((GridDataItem)e.Item).GetDataKeyValue("ID"));
+            cmd.ExecuteNonQuery();
+            con.Close();
         }
         #endregion
 
@@ -1846,6 +2145,138 @@ namespace PRIMA_HRIS.Page.PA.Employee
             while (dr.Read())
             {
                 (sender as RadComboBox).SelectedValue = dr["FamilyTypeCode"].ToString();
+            }
+            dr.Close();
+            con.Close();
+        }
+
+        protected void CB_jns_hub_emergency_kontak_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
+        {
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT FamilyTypeCode FROM MsFamilyType WHERE FamilyTypeName = '" + (sender as RadComboBox).Text + "'";
+            SqlDataReader dr;
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                (sender as RadComboBox).SelectedValue = dr["FamilyTypeCode"].ToString();
+            }
+            dr.Close();
+            con.Close();
+        }
+
+        protected void CB_jns_hub_emergency_kontak_PreRender(object sender, EventArgs e)
+        {
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT FamilyTypeCode FROM MsFamilyType WHERE FamilyTypeName = '" + (sender as RadComboBox).Text + "'";
+            SqlDataReader dr;
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                (sender as RadComboBox).SelectedValue = dr["FamilyTypeCode"].ToString();
+            }
+            dr.Close();
+            con.Close();
+        }
+
+        private static DataTable GetMajor(string text)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT MajorCode, MajorName FROM MsMajor " +
+                "WHERE (RecordStatus = 'A') AND MajorName LIKE @text + '%'",
+            ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
+            adapter.SelectCommand.Parameters.AddWithValue("@text", text);
+
+            DataTable data = new DataTable();
+            adapter.Fill(data);
+
+            return data;
+        }
+        protected void cb_jurusan_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
+        {
+            DataTable data = GetMajor(e.Text);
+
+            int itemOffset = e.NumberOfItems;
+            int endOffset = Math.Min(itemOffset + ItemsPerRequest, data.Rows.Count);
+            e.EndOfItems = endOffset == data.Rows.Count;
+
+            for (int i = itemOffset; i < endOffset; i++)
+            {
+                (sender as RadComboBox).Items.Add(new RadComboBoxItem(data.Rows[i]["MajorName"].ToString(), data.Rows[i]["MajorName"].ToString()));
+            }
+        }
+
+        protected void cb_jurusan_edit_temp_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
+        {
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT MajorCode FROM MsMajor WHERE MajorName = '" + (sender as RadComboBox).Text + "'";
+            SqlDataReader dr;
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                (sender as RadComboBox).SelectedValue = dr["MajorCode"].ToString();
+            }
+            dr.Close();
+            con.Close();
+        }
+
+        protected void cb_jurusan_insert_temp_SelectedIndexChanged(object sender, RadComboBoxSelectedIndexChangedEventArgs e)
+        {
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT MajorCode FROM MsMajor WHERE MajorName = '" + (sender as RadComboBox).Text + "'";
+            SqlDataReader dr;
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                (sender as RadComboBox).SelectedValue = dr["MajorCode"].ToString();
+            }
+            dr.Close();
+            con.Close();
+
+        }
+
+        protected void cb_jurusan_temp_PreRender(object sender, EventArgs e)
+        {
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT MajorCode FROM MsMajor WHERE MajorName = '" + (sender as RadComboBox).Text + "'";
+            SqlDataReader dr;
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                (sender as RadComboBox).SelectedValue = dr["MajorCode"].ToString();
+            }
+            dr.Close();
+            con.Close();
+        }
+        
+
+
+        protected void cb_kota_temp_PreRender(object sender, EventArgs e)
+        {
+
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT CityCode FROM MSCity WHERE CityName = '" + (sender as RadComboBox).Text + "'";
+            SqlDataReader dr;
+            dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                (sender as RadComboBox).SelectedValue = dr["CityCode"].ToString();
             }
             dr.Close();
             con.Close();

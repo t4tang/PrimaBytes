@@ -370,7 +370,7 @@
                                                         <telerik:RadLabel Text="NIK" runat="server" ForeColor="YellowGreen" Skin="Glow"></telerik:RadLabel>
                                                     </td>
                                                     <td>
-                                                        <telerik:RadTextBox ID="txt_nik" runat="server" Width="350px" RenderMode="Auto" Skin="Glow"
+                                                        <telerik:RadTextBox ID="txt_nik" runat="server" Width="350px" RenderMode="Auto" Skin="Glow" ReadOnly="true"
                                                            Text='<%# DataBinder.Eval(Container, "DataItem.EmployeeNo") %>'  AutoPostBack="false">
                                                         </telerik:RadTextBox>
                                                         <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator7" ControlToValidate="txt_nik" ForeColor="Red" 
@@ -406,13 +406,16 @@
                                                        <telerik:RadLabel Text="Lokasi" runat="server" ForeColor="YellowGreen" Skin="Glow"></telerik:RadLabel>
                                                     </td>
                                                     <td>
-                                                        <telerik:RadComboBox RenderMode="Auto" ID="cb_lokasi" runat="server" Width="350px"  ReadOnly="false"
+                                                        <%--<telerik:RadComboBox RenderMode="Auto" ID="cb_lokasi" runat="server" Width="350px"  ReadOnly="false"
                                                             EnableLoadOnDemand="True" HighlightTemplatedItems="true" 
                                                             MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" AutoPostBack="False" CausesValidation="false"
                                                             Text='<%# DataBinder.Eval(Container, "DataItem.LocationName") %>' 
                                                             OnItemsRequested="cb_lokasi_ItemsRequested" 
                                                             OnSelectedIndexChanged="cb_lokasi_SelectedIndexChanged"
-                                                            OnPreRender="cb_lokasi_PreRender"></telerik:RadComboBox>
+                                                            OnPreRender="cb_lokasi_PreRender"></telerik:RadComboBox>--%>
+                                                        <telerik:RadTextBox ReadOnly="true" ID="txt_lokasi" runat="server" Width="350px" RenderMode="Auto" Skin="Glow"
+                                                           Text='<%# DataBinder.Eval(Container, "DataItem.LocationName") %>'  AutoPostBack="false">
+                                                        </telerik:RadTextBox>
                                                     </td>
                                                 </tr>                                                          
                                             </table>           
@@ -937,9 +940,17 @@
                                                                 Jenis Hubungan
                                                             </td>
                                                             <td >
-                                                                <telerik:RadTextBox ReadOnly="false" ID="txt_jns_hub_emergency_contak" Width="250px" runat="server" Skin="Glow"
+                                                                <%--<telerik:RadTextBox ReadOnly="false" ID="txt_jns_hub_emergency_contak" Width="250px" runat="server" Skin="Glow"
                                                                     Text='<%# DataBinder.Eval(Container, "DataItem.EmergencyContactType") %>' >
-                                                                    </telerik:RadTextBox>
+                                                                    </telerik:RadTextBox>--%>
+                                                                <telerik:RadComboBox RenderMode="Auto" ID="cb_jns_hub_emergency_kontak" runat="server" Width="200px"
+                                                                    EnableLoadOnDemand="True" HighlightTemplatedItems="true" AutoPostBack="true"
+                                                                    MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" 
+                                                                    Text='<%# DataBinder.Eval(Container, "DataItem.EmergencyContactType") %>' 
+                                                                    OnItemsRequested="cb_jenis_keluarga_temp_ItemsRequested" 
+                                                                    OnSelectedIndexChanged="CB_jns_hub_emergency_kontak_SelectedIndexChanged"
+                                                                    OnPreRender="CB_jns_hub_emergency_kontak_PreRender" >                                                                                                     
+                                                                </telerik:RadComboBox> 
                                                             </td>
                                                         </tr>   
                                                         <tr>
@@ -1122,6 +1133,10 @@
                                                                 <telerik:RadTextBox runat="server" ID="txt_keterangan_insert_temp" Skin="Glow" Width="360px"></telerik:RadTextBox>
                                                             </InsertItemTemplate>
                                                         </telerik:GridTemplateColumn>
+                                                        <telerik:GridButtonColumn UniqueName="DeleteColumn" Text="Delete" CommandName="Delete" ItemStyle-ForeColor="OrangeRed"
+                                                            ConfirmText="Are You Sure ?" ConfirmTitle="Delete" ConfirmDialogType="RadWindow" ButtonType="FontIconButton">
+                                                            <HeaderStyle Width="30px"></HeaderStyle>
+                                                        </telerik:GridButtonColumn>           
                                                     </Columns>
                                                     </MasterTableView>
                                                     <ClientSettings>
@@ -1134,93 +1149,6 @@
                                     </telerik:RadPageView>
                                     <telerik:RadPageView runat="server" ID="RadPageView4" Height="100%">
                                         <div style="height:300px; overflow:auto; padding:5px 5px 5px 5px; vertical-align:top; ">
-                                            <div style="width:25%; padding: 10px 10px 10px 30px; display:inline-block; vertical-align:top; 
-                                              font-family:Verdana; font-size:12px; margin-top:7px"> 
-                                                Jabatan :
-                                                <table style="padding: 5px 0px 10px 10px">                                             
-                                                    <tr>
-                                                        <td style="width: 150px">
-                                                            Posisi 
-                                                        </td>
-                                                        <td >
-                                                            <telerik:RadComboBox RenderMode="Auto" ID="cb_posisi" runat="server" Width="300px"
-                                                                EnableLoadOnDemand="True" HighlightTemplatedItems="true" AutoPostBack="true"
-                                                                MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" 
-                                                                Text='<%# DataBinder.Eval(Container, "DataItem.PositionName") %>' 
-                                                                OnItemsRequested="cb_posisi_ItemsRequested" 
-                                                                OnSelectedIndexChanged="cb_posisi_SelectedIndexChanged"
-                                                                OnPreRender="cb_posisi_PreRender" >
-                                                            </telerik:RadComboBox>                                
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td >
-                                                            Assign 
-                                                        </td>
-                                                        <td >
-                                                            <telerik:RadComboBox RenderMode="Auto" ID="cb_posisi_assign" runat="server" Width="300px"
-                                                                EnableLoadOnDemand="True" HighlightTemplatedItems="true" AutoPostBack="true"
-                                                                MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" 
-                                                                Text='<%# DataBinder.Eval(Container, "DataItem.AssignPositionName") %>' 
-                                                                OnItemsRequested="cb_posisi_ItemsRequested" 
-                                                                OnSelectedIndexChanged="cb_posisi_assign_SelectedIndexChanged"
-                                                                OnPreRender="cb_posisi_assign_PreRender" >                                                                                                     
-                                                            </telerik:RadComboBox>                               
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                                <div>
-                                                    Pangkat:
-                                                    <table style="padding: 10px 0px 10px 10px">                                             
-                                                        <tr>
-                                                            <td style="width: 100px">
-                                                                Kategori 
-                                                            </td>
-                                                            <td >
-                                                                <telerik:RadComboBox RenderMode="Auto" ID="cb_kategori_pangkat" runat="server" Width="150px"
-                                                                    EnableLoadOnDemand="True" HighlightTemplatedItems="true" AutoPostBack="true"
-                                                                    MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" 
-                                                                    Text='<%# DataBinder.Eval(Container, "DataItem.EmployeeCategoryName") %>' 
-                                                                    OnItemsRequested="cb_kategori_pangkat_ItemsRequested" 
-                                                                    OnSelectedIndexChanged="cb_kategori_pangkat_SelectedIndexChanged"
-                                                                    OnPreRender="cb_kategori_pangkat_PreRender" >                                                                                                     
-                                                                </telerik:RadComboBox>                                
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td >
-                                                                Golongan 
-                                                            </td>
-                                                            <td >
-                                                                <telerik:RadComboBox RenderMode="Auto" ID="cb_golongan" runat="server" Width="150px"
-                                                                    EnableLoadOnDemand="True" HighlightTemplatedItems="true" AutoPostBack="true"
-                                                                    MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" 
-                                                                    Text='<%# DataBinder.Eval(Container, "DataItem.GradeCode") %>' 
-                                                                    OnItemsRequested="cb_golongan_ItemsRequested" 
-                                                                    OnSelectedIndexChanged="cb_golongan_SelectedIndexChanged"
-                                                                    OnPreRender="cb_golongan_PreRender" >                                                                                                     
-                                                                </telerik:RadComboBox>                               
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td >
-                                                                Sub Golongan 
-                                                            </td>
-                                                            <td >
-                                                                <telerik:RadComboBox RenderMode="Auto" ID="cb_sub_golongan" runat="server" Width="150px"
-                                                                    EnableLoadOnDemand="True" HighlightTemplatedItems="true" AutoPostBack="true"
-                                                                    MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" 
-                                                                    Text='<%# DataBinder.Eval(Container, "DataItem.SubGradeName") %>' 
-                                                                    OnItemsRequested="cb_sub_golongan_ItemsRequested" 
-                                                                    OnSelectedIndexChanged="cb_sub_golongan_SelectedIndexChanged"
-                                                                    OnPreRender="cb_sub_golongan_PreRender" >                                                                                                     
-                                                                </telerik:RadComboBox>                               
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                
-                                            </div>
                                             <div style="width:27%; padding: 5px 10px 10px 30px; display:inline-block; vertical-align:top; 
                                               font-family:Verdana; font-size:12px; margin-top:7px"> 
                                                 Lokasi:
@@ -1306,24 +1234,109 @@
                                                         </tr>
                                                     </table>
                                                 </div>
+                                                
+                                            </div>
+                                            <div style="width:25%; padding: 10px 10px 10px 30px; display:inline-block; vertical-align:top; 
+                                              font-family:Verdana; font-size:12px; margin-top:7px"> 
+                                                Jabatan :
+                                                <table style="padding: 5px 0px 10px 10px">                                             
+                                                    <tr>
+                                                        <td style="width: 150px">
+                                                            Posisi 
+                                                        </td>
+                                                        <td >
+                                                            <telerik:RadComboBox RenderMode="Auto" ID="cb_posisi" runat="server" Width="300px"
+                                                                EnableLoadOnDemand="True" HighlightTemplatedItems="true" AutoPostBack="true"
+                                                                MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" 
+                                                                Text='<%# DataBinder.Eval(Container, "DataItem.PositionName") %>' 
+                                                                OnItemsRequested="cb_posisi_ItemsRequested" 
+                                                                OnSelectedIndexChanged="cb_posisi_SelectedIndexChanged"
+                                                                OnPreRender="cb_posisi_PreRender" >
+                                                            </telerik:RadComboBox>                                
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td >
+                                                            Assign 
+                                                        </td>
+                                                        <td >
+                                                            <telerik:RadComboBox RenderMode="Auto" ID="cb_posisi_assign" runat="server" Width="300px"
+                                                                EnableLoadOnDemand="True" HighlightTemplatedItems="true" AutoPostBack="true"
+                                                                MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" 
+                                                                Text='<%# DataBinder.Eval(Container, "DataItem.AssignPositionName") %>' 
+                                                                OnItemsRequested="cb_posisi_ItemsRequested" 
+                                                                OnSelectedIndexChanged="cb_posisi_assign_SelectedIndexChanged"
+                                                                OnPreRender="cb_posisi_assign_PreRender" >                                                                                                     
+                                                            </telerik:RadComboBox>                               
+                                                        </td>
+                                                    </tr>
+                                                </table>
                                                 <div>
-                                                    Unit Yang Dibawa:
-                                                    <table style="padding: 10px 0px 0px 10px">                                             
+                                                    Pangkat:
+                                                    <table style="padding: 10px 0px 10px 10px">                                             
                                                         <tr>
                                                             <td style="width: 100px">
-                                                                Kode Unit 
+                                                                Kategori 
                                                             </td>
                                                             <td >
+                                                                <telerik:RadComboBox RenderMode="Auto" ID="cb_kategori_pangkat" runat="server" Width="150px"
+                                                                    EnableLoadOnDemand="True" HighlightTemplatedItems="true" AutoPostBack="true"
+                                                                    MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" 
+                                                                    Text='<%# DataBinder.Eval(Container, "DataItem.EmployeeCategoryName") %>' 
+                                                                    OnItemsRequested="cb_kategori_pangkat_ItemsRequested" 
+                                                                    OnSelectedIndexChanged="cb_kategori_pangkat_SelectedIndexChanged"
+                                                                    OnPreRender="cb_kategori_pangkat_PreRender" >                                                                                                     
+                                                                </telerik:RadComboBox>                                
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td >
+                                                                Golongan 
+                                                            </td>
+                                                            <td >
+                                                                <telerik:RadComboBox RenderMode="Auto" ID="cb_golongan" runat="server" Width="150px"
+                                                                    EnableLoadOnDemand="True" HighlightTemplatedItems="true" AutoPostBack="true"
+                                                                    MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" Height="90px"
+                                                                    Text='<%# DataBinder.Eval(Container, "DataItem.GradeCode") %>' 
+                                                                    OnItemsRequested="cb_golongan_ItemsRequested" 
+                                                                    OnSelectedIndexChanged="cb_golongan_SelectedIndexChanged"
+                                                                    OnPreRender="cb_golongan_PreRender" >                                                                                                     
+                                                                </telerik:RadComboBox>                               
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td >
+                                                                Sub Golongan 
+                                                            </td>
+                                                            <td >
+                                                                <telerik:RadComboBox RenderMode="Auto" ID="cb_sub_golongan" runat="server" Width="150px"
+                                                                    EnableLoadOnDemand="True" HighlightTemplatedItems="true" AutoPostBack="true"
+                                                                    MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" 
+                                                                    Text='<%# DataBinder.Eval(Container, "DataItem.SubGradeName") %>' 
+                                                                    OnItemsRequested="cb_sub_golongan_ItemsRequested" 
+                                                                    OnSelectedIndexChanged="cb_sub_golongan_SelectedIndexChanged"
+                                                                    OnPreRender="cb_sub_golongan_PreRender" >                                                                                                     
+                                                                </telerik:RadComboBox>                               
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="width: 100px" >
+                                                                Kode Unit 
+                                                            </td>
+                                                            <td>
                                                                 <telerik:RadTextBox ReadOnly="false" ID="txt_kode_unit" Width="150px" runat="server" Skin="Glow"
                                                                 Text='<%# DataBinder.Eval(Container, "DataItem.UnitCode") %>' >
-                                                                </telerik:RadTextBox>                                 
+                                                                </telerik:RadTextBox>
                                                             </td>
                                                         </tr>
                                                     </table>
                                                 </div>
+                                                
                                             </div>
+                                            
+
                                             <div style="width:37%; padding: 0px 10px 10px 30px; display:inline-block; vertical-align:top; 
-                                              font-family:Verdana; font-size:12px; margin-top:0px"> 
+                                              font-family:Verdana; font-size:12px; margin-top: 0px"> 
                                                 <h5>Pergerakan karyawan : </h5>
                                                 <telerik:RadGrid  RenderMode="Auto" ID="rg_pergerakan_karyawan"  runat="server" AllowPaging="true" ShowFooter="false" Skin="Glow" 
                                                 AllowSorting="True" AutoGenerateColumns="False" ShowStatusBar="true" PageSize="5" CssClass="RadGrid_ModernBrowsers"
@@ -1343,6 +1356,31 @@
                                                         <telerik:GridEditCommandColumn UniqueName="EditCommandColumn" ItemStyle-Width="70px" 
                                                             HeaderStyle-Width="40px" UpdateText="Update" HeaderStyle-HorizontalAlign="Center">
                                                         </telerik:GridEditCommandColumn>
+                                                        <telerik:GridTemplateColumn HeaderText="Tanggal" HeaderStyle-Width="110px" ItemStyle-Width="110px" 
+                                                            HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
+                                                            <ItemTemplate>                                                            
+                                                                <telerik:RadLabel runat="server" ID="lbl_tanggal_pergerakan_temp" Width="110px" Skin="Glow" 
+                                                                   Text='<%# DataBinder.Eval(Container.DataItem, "LicenseDate","{0:dd/MM/yyyy}") %>' ></telerik:RadLabel>
+                                                            </ItemTemplate>
+                                                            <EditItemTemplate>
+                                                                <telerik:RadDatePicker ID="dtp_tanggal_pergerakan_edit_temp" runat="server" MinDate="1/1/1900" Width="100px" RenderMode="Auto"
+                                                                    Skin="Glow" DbSelectedDate='<%# DataBinder.Eval(Container.DataItem, "LicenseDate") %>' > 
+                                                                    <Calendar runat="server" UseRowHeadersAsSelectors="False" UseColumnHeadersAsSelectors="False" Skin="Glow" 
+                                                                        EnableWeekends="True" FastNavigationNextText="&amp;lt;&amp;lt;"></Calendar>
+                                                                    <DateInput runat="server" DisplayDateFormat="dd/MM/yyyy" DateFormat="dd/MM/yyyy" Skin="Glow" LabelWidth="40%">                            
+                                                                    </DateInput>                        
+                                                                </telerik:RadDatePicker>
+                                                            </EditItemTemplate>
+                                                            <InsertItemTemplate>                                                                  
+                                                                <telerik:RadDatePicker ID="dtp_tanggal_pergerakan_insert_temp" runat="server" MinDate="1/1/1900" Width="100px" 
+                                                                    RenderMode="Auto" Skin="Glow" > 
+                                                                    <Calendar runat="server" UseRowHeadersAsSelectors="False" UseColumnHeadersAsSelectors="False" Skin="Glow" 
+                                                                        EnableWeekends="True" FastNavigationNextText="&amp;lt;&amp;lt;"></Calendar>
+                                                                    <DateInput runat="server" DisplayDateFormat="dd/MM/yyyy" DateFormat="dd/MM/yyyy" Skin="Glow" LabelWidth="40%">                            
+                                                                    </DateInput>                        
+                                                                </telerik:RadDatePicker>
+                                                            </InsertItemTemplate>
+                                                        </telerik:GridTemplateColumn>
                                                         <telerik:GridTemplateColumn HeaderText="Jabatan" HeaderStyle-Width="135px" ItemStyle-Width="125px" 
                                                             HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                             <ItemTemplate>                                                                    
@@ -1442,7 +1480,7 @@
                                         </div>      
                                     </telerik:RadPageView>
                                     <telerik:RadPageView runat="server" ID="RadPageView5" Height="100%" >
-                                        <div style="height: 300px; overflow: auto; padding: 5px 5px 5px 5px; vertical-align:top; ">                  
+                                        <div style=" height: 300px; overflow: auto; padding: 5px 5px 5px 5px; vertical-align: top">                  
                                             <div style="width:98%; padding: 0px 10px 5px 10px; display:inline-block; vertical-align:top; 
                                                 font-family:Verdana; font-size:12px; margin-top:0px"> 
                                                 <h5>Pendidikan Formal :</h5>
@@ -1450,7 +1488,9 @@
                                                 AllowSorting="True" AutoGenerateColumns="False" ShowStatusBar="true" PageSize="5" CssClass="RadGrid_ModernBrowsers"
                                                 OnNeedDataSource="rg_pendidikan_NeedDataSource" 
                                                     OnItemCommand="rg_pendidikan_ItemCommand"
-                                                OnDeleteCommand="rg_pendidikan_DeleteCommand" >
+                                                    OnDeleteCommand="rg_pendidikan_DeleteCommand" 
+                                                    OnInsertCommand="rg_pendidikan_InsertCommand" 
+                                                    OnUpdateCommand="rg_pendidikan_UpdateCommand" >
                                                 <PagerStyle Mode="NextPrevNumericAndAdvanced" Position="Top" ForeColor="#0099CC" VerticalAlign="Middle"></PagerStyle> 
                                                 <ClientSettings EnablePostBackOnRowClick="true" EnableRowHoverStyle="true" Selecting-AllowRowSelect="true" EnableAlternatingItems="false"/>
                                                 <AlternatingItemStyle Font-Names="Tahoma" Font-Size="11px" ForeColor="YellowGreen" />
@@ -1458,7 +1498,7 @@
                                                 <ItemStyle Font-Names="Tahoma" Font-Size="11px" ForeColor="YellowGreen" />
                                                 <SelectedItemStyle Font-Italic="False"/>
                                                 <SortingSettings EnableSkinSortStyles="false" />
-                                                <MasterTableView CommandItemDisplay="Top" Font-Size="11px" Font-Names="Tahoma" DataKeyNames="EmployeeNo,EducationCode" 
+                                                <MasterTableView CommandItemDisplay="Top" Font-Size="11px" Font-Names="Tahoma" DataKeyNames="ID" 
                                                     EditMode="InPlace" EditFormSettings-PopUpSettings-Modal="true" EditFormSettings-PopUpSettings-KeepInScreenBounds="true" 
                                                     AllowFilteringByColumn="false" CommandItemSettings-ShowAddNewRecordButton="true" 
                                                     CommandItemSettings-ShowRefreshButton="false" > 
@@ -1466,26 +1506,28 @@
                                                         <telerik:GridEditCommandColumn UniqueName="EditCommandColumn" ItemStyle-Width="70px" 
                                                             HeaderStyle-Width="40px" UpdateText="Update" HeaderStyle-HorizontalAlign="Center">
                                                         </telerik:GridEditCommandColumn>
-                                                        <telerik:GridTemplateColumn HeaderText="Jenjang" HeaderStyle-Width="185px" ItemStyle-Width="185px" 
+                                                        <telerik:GridTemplateColumn HeaderText="Jenjang" HeaderStyle-Width="85px" ItemStyle-Width="85px" 
                                                             HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                             <ItemTemplate> 
-                                                                <telerik:RadLabel runat="server" ID="lbl_jenjang_temp" Width="185px" Skin="Glow" 
+                                                                <telerik:RadLabel runat="server" ID="lbl_jenjang_temp" Width="85px" Skin="Glow" 
                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "EducationDescription") %>' ></telerik:RadLabel>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
-                                                                <telerik:RadComboBox RenderMode="Auto" runat="server" ID="cb_jenjang_temp" EnableLoadOnDemand="True" 
+                                                                <telerik:RadComboBox RenderMode="Auto" runat="server" ID="cb_jenjang_edit_temp" EnableLoadOnDemand="True" 
                                                                     AutoPostBack="true" Skin="Glow" Text='<%# DataBinder.Eval(Container.DataItem, "EducationDescription") %>'                                                                   
-                                                                    HighlightTemplatedItems="true" Width="185px"
-                                                                    OnItemsRequested="cb_jenjang_temp_ItemsRequested" 
-                                                                    OnSelectedIndexChanged="cb_jenjang_temp_SelectedIndexChanged" >  
+                                                                    HighlightTemplatedItems="true" Width="85px"
+                                                                    OnItemsRequested="cb_jenjang_ItemsRequested" 
+                                                                    OnSelectedIndexChanged="cb_jenjang_temp_SelectedIndexChanged" 
+                                                                    OnPreRender="cb_jenjang_temp_PreRender">  
                                                                 </telerik:RadComboBox>
                                                             </EditItemTemplate>
                                                             <InsertItemTemplate>                                                                  
-                                                                <telerik:RadComboBox RenderMode="Auto" runat="server" ID="cb_jenjang_temp" EnableLoadOnDemand="True" 
+                                                                <telerik:RadComboBox RenderMode="Auto" runat="server" ID="cb_jenjang_insert_temp" EnableLoadOnDemand="True" 
                                                                     AutoPostBack="true" Skin="Glow"
-                                                                    HighlightTemplatedItems="true" Width="185px"
-                                                                    OnItemsRequested="cb_jabatan_temp_ItemsRequested" 
-                                                                    OnSelectedIndexChanged="cb_jabatan_temp_SelectedIndexChanged">  
+                                                                    HighlightTemplatedItems="true" Width="85px"
+                                                                    OnItemsRequested="cb_jenjang_ItemsRequested" 
+                                                                    OnSelectedIndexChanged="cb_jabatan_temp_SelectedIndexChanged" 
+                                                                    OnPreRender="cb_jenjang_temp_PreRender">  
                                                                 </telerik:RadComboBox>
                                                             </InsertItemTemplate>
                                                         </telerik:GridTemplateColumn>
@@ -1496,14 +1538,27 @@
                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "MajorName") %>' ></telerik:RadLabel>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
-                                                                <telerik:RadTextBox ReadOnly="false" ID="txt_jurusan_edit_temp" Width="205px" runat="server" Skin="Glow"
+                                                                <%--<telerik:RadTextBox ReadOnly="false" ID="txt_jurusan_edit_temp" Width="205px" runat="server" Skin="Glow"
                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "MajorName") %>' >
-                                                                </telerik:RadTextBox> 
+                                                                </telerik:RadTextBox> --%>
+                                                                <telerik:RadComboBox RenderMode="Auto" runat="server" ID="cb_jurusan_edit_temp" EnableLoadOnDemand="True" 
+                                                                    AutoPostBack="true" Skin="Glow" Text='<%# DataBinder.Eval(Container.DataItem, "MajorName") %>'                                                                   
+                                                                    HighlightTemplatedItems="true" Width="205px"
+                                                                    OnItemsRequested="cb_jurusan_ItemsRequested" 
+                                                                    OnSelectedIndexChanged="cb_jurusan_edit_temp_SelectedIndexChanged" 
+                                                                    OnPreRender="cb_jurusan_temp_PreRender">  
+                                                                </telerik:RadComboBox>
                                                             </EditItemTemplate>
                                                             <InsertItemTemplate>
-                                                                <telerik:RadTextBox ReadOnly="false" ID="txt_jurusan_insert_temp" Width="205px" runat="server" Skin="Glow"
-                                                                     >
-                                                                </telerik:RadTextBox> 
+                                                                <%--<telerik:RadTextBox ReadOnly="false" ID="txt_jurusan_insert_temp" Width="205px" runat="server" Skin="Glow" >
+                                                                </telerik:RadTextBox> --%>
+                                                                <telerik:RadComboBox RenderMode="Auto" runat="server" ID="cb_jurusan_insert_temp" EnableLoadOnDemand="True" 
+                                                                    AutoPostBack="true" Skin="Glow"                                                                 
+                                                                    HighlightTemplatedItems="true" Width="205px"
+                                                                    OnItemsRequested="cb_jurusan_ItemsRequested" 
+                                                                    OnSelectedIndexChanged="cb_jurusan_insert_temp_SelectedIndexChanged" 
+                                                                    OnPreRender="cb_jurusan_temp_PreRender">  
+                                                                </telerik:RadComboBox>
                                                             </InsertItemTemplate>
                                                         </telerik:GridTemplateColumn>
                                                         <telerik:GridTemplateColumn HeaderText="Lembaga" HeaderStyle-Width="225px" ItemStyle-Width="225px" 
@@ -1516,59 +1571,68 @@
                                                                 <telerik:RadTextBox ReadOnly="false" ID="txt_lembaga_edit_temp" Width="225px" runat="server" Skin="Glow"
                                                                     Text='<%# DataBinder.Eval(Container.DataItem, "InstitutionName") %>'  >
                                                                 </telerik:RadTextBox> 
+                                                                
                                                             </EditItemTemplate>
                                                             <InsertItemTemplate>                                                                  
-                                                                <telerik:RadTextBox ReadOnly="false" ID="txt_lembaga_insert_temp" Width="225px" runat="server" Skin="Glow"
-                                                                     >
+                                                                <telerik:RadTextBox ReadOnly="false" ID="txt_lembaga_insert_temp" Width="225px" runat="server" Skin="Glow">
                                                                 </telerik:RadTextBox>
+                                                                
                                                             </InsertItemTemplate>
                                                         </telerik:GridTemplateColumn>
-                                                        <telerik:GridTemplateColumn HeaderText="Kota" HeaderStyle-Width="150px" ItemStyle-Width="140px" 
+                                                        <telerik:GridTemplateColumn HeaderText="Kota" HeaderStyle-Width="250px" ItemStyle-Width="240px" 
                                                             HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                             <ItemTemplate> 
-                                                                <telerik:RadLabel runat="server" ID="lbl_kota_temp" Width="225px" Skin="Glow" 
-                                                                   Text='<%# DataBinder.Eval(Container.DataItem, "InstitutionCity") %>' ></telerik:RadLabel>
+                                                                <telerik:RadLabel runat="server" ID="lbl_kota_temp" Width="240px" Skin="Glow" 
+                                                                   Text='<%# DataBinder.Eval(Container.DataItem, "CityName") %>' ></telerik:RadLabel>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
                                                                 <telerik:RadComboBox RenderMode="Auto" runat="server" ID="cb_kota_edit_temp" EnableLoadOnDemand="True" 
-                                                                    AutoPostBack="true" Skin="Glow" Text='<%# DataBinder.Eval(Container.DataItem, "InstitutionCity") %>'                                                                   
-                                                                    HighlightTemplatedItems="true" Width="140px"
-                                                                    OnItemsRequested="cb_kota_edit_temp_ItemsRequested" 
-                                                                    OnSelectedIndexChanged="cb_kota_edit_temp_SelectedIndexChanged" >  
+                                                                    AutoPostBack="true" Skin="Glow" Text='<%# DataBinder.Eval(Container.DataItem, "CityName") %>'                                                                   
+                                                                    HighlightTemplatedItems="true" Width="240px"
+                                                                    OnItemsRequested="cb_kota_ItemsRequested" 
+                                                                    OnSelectedIndexChanged="cb_kota_edit_temp_SelectedIndexChanged" 
+                                                                    OnPreRender="cb_kota_temp_PreRender">  
                                                                 </telerik:RadComboBox>
                                                             </EditItemTemplate>
                                                             <InsertItemTemplate>                                                                  
                                                                 <telerik:RadComboBox RenderMode="Auto" runat="server" ID="cb_kota_insert_temp" EnableLoadOnDemand="True" 
                                                                     AutoPostBack="true" Skin="Glow"
-                                                                    HighlightTemplatedItems="true" Width="140px"
-                                                                    OnItemsRequested="cb_kota_insert_temp_ItemsRequested"
-                                                                    OnSelectedIndexChanged="cb_kota_insert_temp_SelectedIndexChanged" >  
+                                                                    HighlightTemplatedItems="true" Width="240px"
+                                                                    OnItemsRequested="cb_kota_ItemsRequested"
+                                                                    OnSelectedIndexChanged="cb_kota_insert_temp_SelectedIndexChanged" 
+                                                                    OnPreRender="cb_kota_temp_PreRender">  
                                                                 </telerik:RadComboBox>
                                                             </InsertItemTemplate>
                                                         </telerik:GridTemplateColumn>
-                                                        <telerik:GridTemplateColumn HeaderText="Status" HeaderStyle-Width="80px" ItemStyle-Width="70px" 
+                                                        <telerik:GridTemplateColumn HeaderText="Status" HeaderStyle-Width="120px" ItemStyle-Width="110px" 
                                                             HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                             <ItemTemplate>
-                                                                <telerik:RadLabel runat="server" ID="lbl_status_temp" Width="125px" Skin="Glow" 
+                                                                <telerik:RadLabel runat="server" ID="lbl_status_temp" Width="110px" Skin="Glow" 
                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "EducationStatusDescription") %>' ></telerik:RadLabel>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
                                                                 <telerik:RadComboBox RenderMode="Auto" runat="server" ID="cb_status_edit_temp" EnableLoadOnDemand="True" 
                                                                     AutoPostBack="true" Skin="Glow" Text='<%# DataBinder.Eval(Container.DataItem, "EducationStatusDescription") %>'                                                                   
-                                                                    HighlightTemplatedItems="true" Width="125px"
-                                                                    OnItemsRequested="cb_status_edit_temp_ItemsRequested" 
-                                                                    OnSelectedIndexChanged="cb_status_edit_temp_SelectedIndexChanged" >  
+                                                                    HighlightTemplatedItems="true" Width="110px"
+                                                                    OnItemsRequested="cb_status_temp_ItemsRequested" 
+                                                                    OnSelectedIndexChanged="cb_status_edit_temp_SelectedIndexChanged" 
+                                                                    OnPreRender="cb_status_temp_PreRender">  
                                                                 </telerik:RadComboBox>
                                                             </EditItemTemplate>
                                                             <InsertItemTemplate>                                                                  
                                                                 <telerik:RadComboBox RenderMode="Auto" runat="server" ID="cb_status_insert_temp" EnableLoadOnDemand="True" 
                                                                     AutoPostBack="true" Skin="Glow"
-                                                                    HighlightTemplatedItems="true" Width="70px"
-                                                                    OnItemsRequested="cb_status_insert_temp_ItemsRequested" 
-                                                                    OnSelectedIndexChanged="cb_status_insert_temp_SelectedIndexChanged" >  
+                                                                    HighlightTemplatedItems="true" Width="110px"
+                                                                    OnItemsRequested="cb_status_temp_ItemsRequested" 
+                                                                    OnSelectedIndexChanged="cb_status_insert_temp_SelectedIndexChanged" 
+                                                                    OnPreRender="cb_status_temp_PreRender">  
                                                                 </telerik:RadComboBox>
                                                             </InsertItemTemplate>
-                                                        </telerik:GridTemplateColumn>
+                                                        </telerik:GridTemplateColumn>                                                        
+                                                        <telerik:GridButtonColumn UniqueName="DeleteColumn" Text="Delete" CommandName="Delete" ItemStyle-ForeColor="OrangeRed"
+                                                            ConfirmText="Are You Sure ?" ConfirmTitle="Delete" ConfirmDialogType="RadWindow" ButtonType="FontIconButton">
+                                                            <HeaderStyle Width="30px"></HeaderStyle>
+                                                        </telerik:GridButtonColumn>  
                                                     </Columns>
                                                     </MasterTableView>
                                                     <ClientSettings>
@@ -1588,7 +1652,9 @@
                                                 <telerik:RadGrid  RenderMode="Auto" ID="rg_training"  runat="server" AllowPaging="true" ShowFooter="false" Skin="Glow" 
                                                 AllowSorting="True" AutoGenerateColumns="False" ShowStatusBar="true" PageSize="5" CssClass="RadGrid_ModernBrowsers"
                                                 OnNeedDataSource="rg_training_NeedDataSource"
-                                                OnDeleteCommand="rg_training_DeleteCommand" >
+                                                OnDeleteCommand="rg_training_DeleteCommand" 
+                                                    OnInsertCommand="rg_training_InsertCommand" 
+                                                    OnUpdateCommand="rg_training_UpdateCommand" >
                                                 <PagerStyle Mode="NextPrevNumericAndAdvanced" Position="Top" ForeColor="#0099CC" VerticalAlign="Middle"></PagerStyle> 
                                                 <ClientSettings EnablePostBackOnRowClick="true" EnableRowHoverStyle="true" Selecting-AllowRowSelect="true" 
                                                     EnableAlternatingItems="false"/>
@@ -1597,7 +1663,7 @@
                                                 <ItemStyle Font-Names="Tahoma" Font-Size="11px" ForeColor="YellowGreen" />
                                                 <SelectedItemStyle Font-Italic="False"/>
                                                 <SortingSettings EnableSkinSortStyles="false" />
-                                                <MasterTableView CommandItemDisplay="Top" Font-Size="11px" Font-Names="Tahoma" DataKeyNames="EmployeeNo,TrainingName" 
+                                                <MasterTableView CommandItemDisplay="Top" Font-Size="11px" Font-Names="Tahoma" DataKeyNames="EmployeeNo,ID" 
                                                     EditMode="InPlace" EditFormSettings-PopUpSettings-Modal="true" EditFormSettings-PopUpSettings-KeepInScreenBounds="true" 
                                                     AllowFilteringByColumn="false" CommandItemSettings-ShowAddNewRecordButton="true"  
                                                     CommandItemSettings-ShowRefreshButton="false" > 
@@ -1678,6 +1744,10 @@
                                                                 </telerik:RadDatePicker>
                                                             </InsertItemTemplate>
                                                         </telerik:GridTemplateColumn>
+                                                        <telerik:GridButtonColumn UniqueName="DeleteColumn" Text="Delete" CommandName="Delete" ItemStyle-ForeColor="OrangeRed"
+                                                            ConfirmText="Are You Sure ?" ConfirmTitle="Delete" ConfirmDialogType="RadWindow" ButtonType="FontIconButton">
+                                                            <HeaderStyle Width="30px"></HeaderStyle>
+                                                        </telerik:GridButtonColumn>  
                                                         
                                                     </Columns>
                                                     </MasterTableView>
@@ -1695,7 +1765,9 @@
                                                 <telerik:RadGrid  RenderMode="Auto" ID="rg_lisensi"  runat="server" AllowPaging="true" ShowFooter="false" Skin="Glow" 
                                                 AllowSorting="True" AutoGenerateColumns="False" ShowStatusBar="true" PageSize="5" CssClass="RadGrid_ModernBrowsers"
                                                 OnNeedDataSource="rg_lisensi_NeedDataSource"
-                                                OnDeleteCommand="rg_lisensi_DeleteCommand">
+                                                OnDeleteCommand="rg_lisensi_DeleteCommand" 
+                                                    OnInsertCommand="rg_lisensi_InsertCommand" 
+                                                    OnUpdateCommand="rg_lisensi_UpdateCommand">
                                                 <PagerStyle Mode="NextPrevNumericAndAdvanced" Position="Top" ForeColor="#0099CC" VerticalAlign="Middle"></PagerStyle> 
                                                 <ClientSettings EnablePostBackOnRowClick="true" EnableRowHoverStyle="true" Selecting-AllowRowSelect="true" EnableAlternatingItems="false"/>
                                                 <AlternatingItemStyle Font-Names="Tahoma" Font-Size="12px" ForeColor="YellowGreen" />
@@ -1703,11 +1775,11 @@
                                                 <ItemStyle Font-Names="Tahoma" Font-Size="11px" ForeColor="YellowGreen" />
                                                 <SelectedItemStyle Font-Italic="False"/>
                                                 <SortingSettings EnableSkinSortStyles="false" />
-                                                <MasterTableView CommandItemDisplay="Top" Font-Size="11px" Font-Names="Tahoma" DataKeyNames="EmployeeNo,LicenseName" 
+                                                <MasterTableView CommandItemDisplay="Top" Font-Size="11px" Font-Names="Tahoma" DataKeyNames="EmployeeNo,ID" 
                                                     EditMode="InPlace" EditFormSettings-PopUpSettings-Modal="true" EditFormSettings-PopUpSettings-KeepInScreenBounds="true" 
                                                     AllowFilteringByColumn="false" CommandItemSettings-ShowAddNewRecordButton="true" CommandItemSettings-ShowRefreshButton="false" > 
                                                     <Columns>
-                                                        <telerik:GridEditCommandColumn UniqueName="EditCommandColumn" ItemStyle-Width="70px" 
+                                                        <telerik:GridEditCommandColumn UniqueName="EditCommandColumn" ItemStyle-Width="40px" 
                                                             HeaderStyle-Width="40px" UpdateText="Update" HeaderStyle-HorizontalAlign="Center">
                                                         </telerik:GridEditCommandColumn>
                                                         <telerik:GridTemplateColumn HeaderText="Lisensi Ke" HeaderStyle-Width="80px" ItemStyle-Width="65px" 
@@ -1726,14 +1798,14 @@
                                                                 </telerik:RadTextBox>
                                                             </InsertItemTemplate>
                                                         </telerik:GridTemplateColumn>
-                                                        <telerik:GridTemplateColumn HeaderText="Nama Lisensi" HeaderStyle-Width="225px" ItemStyle-Width="225px" 
+                                                        <telerik:GridTemplateColumn HeaderText="Nama Lisensi" HeaderStyle-Width="215px" ItemStyle-Width="215px" 
                                                             HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                             <ItemTemplate>
-                                                                <telerik:RadLabel runat="server" ID="lbl_nama_lisensi_temp" Width="225px" Skin="Glow" 
+                                                                <telerik:RadLabel runat="server" ID="lbl_nama_lisensi_temp" Width="215px" Skin="Glow" 
                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "LicenseName") %>' ></telerik:RadLabel>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
-                                                                <telerik:RadTextBox ID="txt_nama_lisensi_edit_temp" Width="65px" runat="server" Skin="Glow"
+                                                                <telerik:RadTextBox ID="txt_nama_lisensi_edit_temp" Width="215px" runat="server" Skin="Glow"
                                                                      Text='<%# DataBinder.Eval(Container.DataItem, "LicenseName") %>' >
                                                                 </telerik:RadTextBox>
                                                             </EditItemTemplate>
@@ -1742,19 +1814,19 @@
                                                                 </telerik:RadTextBox> 
                                                             </InsertItemTemplate>
                                                         </telerik:GridTemplateColumn>
-                                                        <telerik:GridTemplateColumn HeaderText="Lembaga" HeaderStyle-Width="225px" ItemStyle-Width="215px" 
+                                                        <telerik:GridTemplateColumn HeaderText="Lembaga" HeaderStyle-Width="205px" ItemStyle-Width="205px" 
                                                             HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                             <ItemTemplate>
-                                                                <telerik:RadLabel runat="server" ID="txt_lembaga_lisensi_edit_temp" Width="225px" Skin="Glow" 
+                                                                <telerik:RadLabel runat="server" ID="txt_lembaga_lisensi_edit_temp" Width="205px" Skin="Glow" 
                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "InstitutionName") %>' ></telerik:RadLabel> 
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
-                                                                <telerik:RadTextBox ID="txt_lembaga_lisensi_edit_temp" Width="225px" runat="server" Skin="Glow"
+                                                                <telerik:RadTextBox ID="txt_lembaga_lisensi_edit_temp" Width="205px" runat="server" Skin="Glow"
                                                                     Text='<%# DataBinder.Eval(Container.DataItem, "InstitutionName") %>'>
                                                                 </telerik:RadTextBox> 
                                                             </EditItemTemplate>
                                                             <InsertItemTemplate>                                                                  
-                                                                <telerik:RadTextBox ID="txt_lembaga_lisensi_insert_temp" Width="225px" runat="server" Skin="Glow">
+                                                                <telerik:RadTextBox ID="txt_lembaga_lisensi_insert_temp" Width="205px" runat="server" Skin="Glow">
                                                                 </telerik:RadTextBox>
                                                             </InsertItemTemplate>
                                                         </telerik:GridTemplateColumn>
@@ -1783,22 +1855,26 @@
                                                                 </telerik:RadDatePicker>
                                                             </InsertItemTemplate>
                                                         </telerik:GridTemplateColumn>
-                                                        <telerik:GridTemplateColumn HeaderText="No Lisensi" HeaderStyle-Width="110px" ItemStyle-Width="110px" 
+                                                        <telerik:GridTemplateColumn HeaderText="No Lisensi" HeaderStyle-Width="100px" ItemStyle-Width="100px" 
                                                             HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                             <ItemTemplate>                                                                    
-                                                                <telerik:RadLabel runat="server" ID="lbl_no_lisensi_temp" Width="110px" Skin="Glow" 
+                                                                <telerik:RadLabel runat="server" ID="lbl_no_lisensi_temp" Width="100px" Skin="Glow" 
                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "LicenseCode") %>' ></telerik:RadLabel>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
-                                                                <telerik:RadTextBox ID="txt_no_lisensi_edit_temp" Width="225px" runat="server" Skin="Glow"
+                                                                <telerik:RadTextBox ID="txt_no_lisensi_edit_temp" Width="100px" runat="server" Skin="Glow"
                                                                     Text='<%# DataBinder.Eval(Container.DataItem, "LicenseCode") %>'>
                                                                 </telerik:RadTextBox>
                                                             </EditItemTemplate>
                                                             <InsertItemTemplate> 
-                                                                <telerik:RadTextBox ID="txt_no_lisensi_insert_temp" Width="225px" runat="server" Skin="Glow">
+                                                                <telerik:RadTextBox ID="txt_no_lisensi_insert_temp" Width="100px" runat="server" Skin="Glow">
                                                                 </telerik:RadTextBox>  
                                                             </InsertItemTemplate>
-                                                        </telerik:GridTemplateColumn>
+                                                        </telerik:GridTemplateColumn>                                                        
+                                                        <telerik:GridButtonColumn UniqueName="DeleteColumn" Text="Delete" CommandName="Delete" ItemStyle-ForeColor="OrangeRed"
+                                                            ConfirmText="Are You Sure ?" ConfirmTitle="Delete" ConfirmDialogType="RadWindow" ButtonType="FontIconButton">
+                                                            <HeaderStyle Width="30px"></HeaderStyle>
+                                                        </telerik:GridButtonColumn>  
                                                     </Columns>
                                                     </MasterTableView>
                                                 <ClientSettings>

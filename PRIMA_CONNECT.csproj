@@ -175,6 +175,7 @@
     <Content Include="Page\GA\Ticket\Request\ga-tkt01.aspx" />
     <Content Include="Page\PA\Employee\pa-emp01.aspx" />
     <Content Include="Page\PA\Employee\pa-emp02.aspx" />
+    <Content Include="Page\PA\Employee\pa-emp03.aspx" />
     <Content Include="scripts\jquery-1.9.1.min.js" />
     <Content Include="scripts\scripts.js" />
     <Content Include="styles\base.css" />
@@ -315,6 +316,13 @@
     <Compile Include="Page\PA\Employee\pa-emp02.aspx.designer.cs">
       <DependentUpon>pa-emp02.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Page\PA\Employee\pa-emp03.aspx.cs">
+      <DependentUpon>pa-emp03.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Page\PA\Employee\pa-emp03.aspx.designer.cs">
+      <DependentUpon>pa-emp03.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -368,7 +376,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties UseJQuerySupport="True" UseAjaxifiedTemplates="True" />
+      <UserProperties UseAjaxifiedTemplates="True" UseJQuerySupport="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
