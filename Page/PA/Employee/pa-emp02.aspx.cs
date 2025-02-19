@@ -286,7 +286,7 @@ namespace PRIMA_HRIS.Page.PA.Employee
                 "[KAWIN/TIDAK KAWIN],[JML ANAK],[PAJAK],[STRATA],[JURUSAN],[NAMA SEKOLAH],[KOTA SEKOLAH],[STATUS],[KETERANGAN],[KODE],[TGL MENIKAH], " +
                 "[TGL CERAI],[TGL WAFAT],[PAY CYCLE],[BANK NAME],[BANK BRANCH],[SUB-DEPT],[DEPARTMENT],[DIVISI],[NAMA KONTAK DARURAT],[JENIS HUBUNGAN], " +
                 "[ALAMAT DARURAT],[NOMOR TELEPON DARURAT 1],[NOMOR TELEPON DARURAT 2],[UKURAN SEPATU],[UKURAN BAJU],[LOKASI SEBELUMNYA],[TANGGAL MUTASI], " +
-                "[UNIT YANG DIBAWA],[POO],[POH],[NO KK],[NIK KK], [USER ID] FROM [{0}]", "Sheet1$");
+                "[UNIT YANG DIBAWA],[POO],[POH],[NO KK],[NIK KK], [USER ID] FROM [{0}]", "Utama$");
             OleDbCommand Ecom = new OleDbCommand(Query, Econ);
             Econ.Open();
 
@@ -417,7 +417,7 @@ namespace PRIMA_HRIS.Page.PA.Employee
             ExcelConn(FilePath);
 
             Query = string.Format("SELECT [NIK],[HUBUNGAN],[NAMA],[TGL_LAHIR],[PENDIDIKAN],[PEKERJAAN],[KETERANGAN],[JNS_KELAMIN], " +
-                "[USER_ID] FROM [{0}]", "Sheet2$");
+                "[USER_ID] FROM [{0}]", "Keluarga$");
             OleDbCommand Ecom = new OleDbCommand(Query, Econ);
             Econ.Open();
 
@@ -587,7 +587,7 @@ namespace PRIMA_HRIS.Page.PA.Employee
             ExcelConn(FilePath);
 
             Query = string.Format("SELECT [NIK],[JENJANG],[JURUSAN],[NAMA INSTITUSI],[KOTA],[STATUS],[KETERANGAN], " +
-                "[USER_ID] FROM [{0}]", "Sheet3$");
+                "[USER_ID] FROM [{0}]", "Pendidikan$");
             OleDbCommand Ecom = new OleDbCommand(Query, Econ);
             Econ.Open();
 
@@ -755,7 +755,7 @@ namespace PRIMA_HRIS.Page.PA.Employee
             ExcelConn(FilePath);
 
             Query = string.Format("SELECT [NIK],[TRAINING KE],[NAMA TRAINING],[PENYELENGGARA],[TANGGAL], [KETERANGAN], " +
-                "[USER_ID] FROM [{0}]", "Sheet4$");
+                "[USER_ID] FROM [{0}]", "Training$");
             OleDbCommand Ecom = new OleDbCommand(Query, Econ);
             Econ.Open();
 
@@ -889,7 +889,7 @@ namespace PRIMA_HRIS.Page.PA.Employee
             ExcelConn(FilePath);
 
             Query = string.Format("SELECT [NIK],[LISENSI KE],[NAMA LISENSI], [LEMBAGA], [TANGGAL], [NOMOR LISENSI], [KETERANGAN], " +
-                "[USER_ID] FROM [{0}]", "Sheet5$");
+                "[USER_ID] FROM [{0}]", "Lisensi$");
             OleDbCommand Ecom = new OleDbCommand(Query, Econ);
             Econ.Open();
 

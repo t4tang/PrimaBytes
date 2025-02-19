@@ -171,6 +171,7 @@
     <Content Include="Page\DS\Division\ds-div01.aspx" />
     <Content Include="Page\DS\Edu\ds_edu01.aspx" />
     <Content Include="Page\DS\Project\ds-prj01.aspx" />
+    <Content Include="Page\FA\ASSET\fa-as001.aspx" />
     <Content Include="Page\GA\Ticket\Issued\ga-tkt02.aspx" />
     <Content Include="Page\GA\Ticket\Request\ga-tkt01.aspx" />
     <Content Include="Page\PA\Employee\pa-emp01.aspx" />
@@ -288,6 +289,13 @@
     <Compile Include="Page\DS\Project\ds-prj01.aspx.designer.cs">
       <DependentUpon>ds-prj01.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Page\FA\ASSET\fa-as001.aspx.cs">
+      <DependentUpon>fa-as001.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Page\FA\ASSET\fa-as001.aspx.designer.cs">
+      <DependentUpon>fa-as001.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Page\GA\Ticket\Issued\ga-tkt02.aspx.cs">
       <DependentUpon>ga-tkt02.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -355,6 +363,8 @@
     <Folder Include="Page\DS\Grade\" />
     <Folder Include="Page\DS\Institution\" />
     <Folder Include="Page\GA\Fpp\" />
+    <Folder Include="Page\MTC\PRC\" />
+    <Folder Include="Page\PRO\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -376,7 +386,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties UseAjaxifiedTemplates="True" UseJQuerySupport="True" />
+      <UserProperties UseJQuerySupport="True" UseAjaxifiedTemplates="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

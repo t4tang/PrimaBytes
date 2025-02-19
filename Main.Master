@@ -148,6 +148,7 @@
                                             <telerik:RadSiteMapNode Visible="true" Text="Financing Submission (FPP)" NavigateUrl="*"></telerik:RadSiteMapNode>
                                             <telerik:RadSiteMapNode Visible="true" Text="Ticket Request" NavigateUrl="Page/GA/Ticket/Request/ga-tkt01.aspx" ></telerik:RadSiteMapNode>
                                             <telerik:RadSiteMapNode Visible="true" Text="Ticket Issued" NavigateUrl="Page/GA/Ticket/Issued/ga-tkt02.aspx" ></telerik:RadSiteMapNode>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Asset Registration" NavigateUrl="Page/FA/ASSET/fa-as001.aspx" ></telerik:RadSiteMapNode>
                                         </Nodes>
                                     </telerik:RadSiteMap>
                                 </ContentTemplate>

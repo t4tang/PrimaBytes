@@ -278,7 +278,7 @@
                 OnSelectedIndexChanged="RadGrid1_SelectedIndexChanged"
                 OnItemCommand="RadGrid1_ItemCommand" 
                 OnItemDataBound="RadGrid1_ItemDataBound" >
-                <PagerStyle Mode="NumericPages" Position="Top" ForeColor="#0099CC" VerticalAlign="Middle"></PagerStyle> 
+                <PagerStyle Mode="NextPrevNumericAndAdvanced" Position="Top" ForeColor="#0099CC" VerticalAlign="Middle"></PagerStyle> 
                 <ClientSettings EnablePostBackOnRowClick="true" EnableRowHoverStyle="true" Selecting-AllowRowSelect="true" EnableAlternatingItems="false"/>
                 <AlternatingItemStyle Font-Names="Tahoma" Font-Size="12px" ForeColor="YellowGreen" />
                 <HeaderStyle Font-Names="Tahoma" Font-Size="11px" Font-Bold="true" ForeColor="DarkOrange"/> 
@@ -342,7 +342,7 @@
                                                     <td colspan="2" style="padding: 0px 0px 10px 0px; text-align:left">
                                                         <asp:Button ID="btnSave" BorderStyle="None" BackColor="Orange" ForeColor="White" Width="90px" 
                                                             Height="25px" OnClick="btnSave_Click"
-                                                            Text='<%# (Container is GridEditFormInsertItem) ? "Insert" : "Update" %>' runat="server" 
+                                                            Text='<%# (Container is GridEditFormInsertItem) ? "Save" : "Update" %>' runat="server" 
                                                             CssClass="btn-entryFrm" >
                                                         </asp:Button>&nbsp;
                             
@@ -1195,7 +1195,7 @@
                                                                 <telerik:RadComboBox RenderMode="Auto" ID="cb_divisi" runat="server" Width="300px"
                                                                     EnableLoadOnDemand="True" HighlightTemplatedItems="true" AutoPostBack="true"
                                                                     MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" 
-                                                                    Text='<%# DataBinder.Eval(Container, "DataItem.EmployeeCategoryName") %>' 
+                                                                    Text='<%# DataBinder.Eval(Container, "DataItem.DivisionName") %>' 
                                                                     OnItemsRequested="cb_divisi_ItemsRequested" 
                                                                     OnSelectedIndexChanged="cb_divisi_SelectedIndexChanged"
                                                                     OnPreRender="cb_divisi_PreRender" >                                                                                                     
@@ -1353,18 +1353,18 @@
                                                     EditMode="EditForms" EditFormSettings-PopUpSettings-Modal="true" EditFormSettings-PopUpSettings-KeepInScreenBounds="true" 
                                                     AllowFilteringByColumn="false" CommandItemSettings-ShowAddNewRecordButton="false" CommandItemSettings-ShowRefreshButton="false" > 
                                                     <Columns>
-                                                        <telerik:GridEditCommandColumn UniqueName="EditCommandColumn" ItemStyle-Width="70px" 
+                                                        <%--<telerik:GridEditCommandColumn UniqueName="EditCommandColumn" ItemStyle-Width="70px" 
                                                             HeaderStyle-Width="40px" UpdateText="Update" HeaderStyle-HorizontalAlign="Center">
-                                                        </telerik:GridEditCommandColumn>
-                                                        <telerik:GridTemplateColumn HeaderText="Tanggal" HeaderStyle-Width="110px" ItemStyle-Width="110px" 
+                                                        </telerik:GridEditCommandColumn>--%>
+                                                        <telerik:GridTemplateColumn HeaderText="Tanggal" HeaderStyle-Width="90px" ItemStyle-Width="90px" 
                                                             HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                             <ItemTemplate>                                                            
-                                                                <telerik:RadLabel runat="server" ID="lbl_tanggal_pergerakan_temp" Width="110px" Skin="Glow" 
-                                                                   Text='<%# DataBinder.Eval(Container.DataItem, "LicenseDate","{0:dd/MM/yyyy}") %>' ></telerik:RadLabel>
+                                                                <telerik:RadLabel runat="server" ID="lbl_tanggal_pergerakan_temp" Width="90px" Skin="Glow" 
+                                                                   Text='<%# DataBinder.Eval(Container.DataItem, "EaDate","{0:dd/MM/yyyy}") %>' ></telerik:RadLabel>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
-                                                                <telerik:RadDatePicker ID="dtp_tanggal_pergerakan_edit_temp" runat="server" MinDate="1/1/1900" Width="100px" RenderMode="Auto"
-                                                                    Skin="Glow" DbSelectedDate='<%# DataBinder.Eval(Container.DataItem, "LicenseDate") %>' > 
+                                                                <telerik:RadDatePicker ID="dtp_tanggal_pergerakan_edit_temp" runat="server" MinDate="1/1/1900" Width="90px" RenderMode="Auto"
+                                                                    Skin="Glow" DbSelectedDate='<%# DataBinder.Eval(Container.DataItem, "EaDate") %>' > 
                                                                     <Calendar runat="server" UseRowHeadersAsSelectors="False" UseColumnHeadersAsSelectors="False" Skin="Glow" 
                                                                         EnableWeekends="True" FastNavigationNextText="&amp;lt;&amp;lt;"></Calendar>
                                                                     <DateInput runat="server" DisplayDateFormat="dd/MM/yyyy" DateFormat="dd/MM/yyyy" Skin="Glow" LabelWidth="40%">                            
@@ -1372,7 +1372,7 @@
                                                                 </telerik:RadDatePicker>
                                                             </EditItemTemplate>
                                                             <InsertItemTemplate>                                                                  
-                                                                <telerik:RadDatePicker ID="dtp_tanggal_pergerakan_insert_temp" runat="server" MinDate="1/1/1900" Width="100px" 
+                                                                <telerik:RadDatePicker ID="dtp_tanggal_pergerakan_insert_temp" runat="server" MinDate="1/1/1900" Width="90px" 
                                                                     RenderMode="Auto" Skin="Glow" > 
                                                                     <Calendar runat="server" UseRowHeadersAsSelectors="False" UseColumnHeadersAsSelectors="False" Skin="Glow" 
                                                                         EnableWeekends="True" FastNavigationNextText="&amp;lt;&amp;lt;"></Calendar>
@@ -1384,14 +1384,16 @@
                                                         <telerik:GridTemplateColumn HeaderText="Jabatan" HeaderStyle-Width="135px" ItemStyle-Width="125px" 
                                                             HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                             <ItemTemplate>                                                                    
-                                                                <asp:Label runat="server" ID="lbl_jabatan_temp" Width="125px" ></asp:Label>
+                                                                <asp:Label runat="server" ID="lbl_jabatan_temp" Width="125px" 
+                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "PositionName") %>'></asp:Label>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
                                                                 <telerik:RadComboBox RenderMode="Auto" runat="server" ID="cb_jabatan_edit_temp" EnableLoadOnDemand="True" 
                                                                     AutoPostBack="true" Skin="Glow"                                                                    
                                                                     HighlightTemplatedItems="true" Width="125px"
                                                                     OnItemsRequested="cb_jabatan_temp_ItemsRequested" 
-                                                                    OnSelectedIndexChanged="cb_jabatan_temp_SelectedIndexChanged">  
+                                                                    OnSelectedIndexChanged="cb_jabatan_temp_SelectedIndexChanged"
+                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "PositionName") %>' >  
                                                                 </telerik:RadComboBox>
                                                             </EditItemTemplate>
                                                             <InsertItemTemplate>                                                                  
@@ -1406,14 +1408,16 @@
                                                         <telerik:GridTemplateColumn HeaderText="Golongan" HeaderStyle-Width="75px" ItemStyle-Width="65px" 
                                                             HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                             <ItemTemplate>                                                                    
-                                                                <asp:Label runat="server" ID="lbl_golongan_temp" Width="65px" ></asp:Label>
+                                                                <asp:Label runat="server" ID="lbl_golongan_temp" Width="65px" 
+                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "GradeCode") %>'></asp:Label>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
                                                                 <telerik:RadComboBox RenderMode="Auto" runat="server" ID="cb_golongan_edit_temp" EnableLoadOnDemand="True" 
                                                                     AutoPostBack="true" Skin="Glow"                                                                    
                                                                     HighlightTemplatedItems="true" Width="65px"
                                                                     OnItemsRequested="cb_jabatan_temp_ItemsRequested" 
-                                                                    OnSelectedIndexChanged="cb_jabatan_temp_SelectedIndexChanged">  
+                                                                    OnSelectedIndexChanged="cb_jabatan_temp_SelectedIndexChanged"
+                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "GradeCode") %>' >  
                                                                 </telerik:RadComboBox>
                                                             </EditItemTemplate>
                                                             <InsertItemTemplate>                                                                  
@@ -1425,17 +1429,19 @@
                                                                 </telerik:RadComboBox>
                                                             </InsertItemTemplate>
                                                         </telerik:GridTemplateColumn>
-                                                        <telerik:GridTemplateColumn HeaderText="Sub Golongan" HeaderStyle-Width="95px" ItemStyle-Width="85px" 
+                                                        <telerik:GridTemplateColumn HeaderText="Sub Gol" HeaderStyle-Width="95px" ItemStyle-Width="85px" 
                                                             HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                             <ItemTemplate>                                                                    
-                                                                <asp:Label runat="server" ID="lbl_sub_golongan_temp" Width="85px" ></asp:Label>
+                                                                <asp:Label runat="server" ID="lbl_sub_golongan_temp" Width="85px" 
+                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "SubGradeCode") %>'></asp:Label>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
                                                                 <telerik:RadComboBox RenderMode="Auto" runat="server" ID="cb_sub_golongan_edit_temp" EnableLoadOnDemand="True" 
                                                                     AutoPostBack="true" Skin="Glow"                                                                    
                                                                     HighlightTemplatedItems="true" Width="85px"
                                                                     OnItemsRequested="cb_jabatan_temp_ItemsRequested" 
-                                                                    OnSelectedIndexChanged="cb_jabatan_temp_SelectedIndexChanged">  
+                                                                    OnSelectedIndexChanged="cb_jabatan_temp_SelectedIndexChanged"
+                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "SubGradeCode") %>'>  
                                                                 </telerik:RadComboBox>
                                                             </EditItemTemplate>
                                                             <InsertItemTemplate>                                                                  
@@ -1450,14 +1456,16 @@
                                                         <telerik:GridTemplateColumn HeaderText="Lokasi" HeaderStyle-Width="150px" ItemStyle-Width="140px" 
                                                             HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center">
                                                             <ItemTemplate>                                                                    
-                                                                <asp:Label runat="server" ID="lbl_lokasi_temp" Width="140px" ></asp:Label>
+                                                                <asp:Label runat="server" ID="lbl_lokasi_temp" Width="140px"
+                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "LocationName") %>' ></asp:Label>
                                                             </ItemTemplate>
                                                             <EditItemTemplate>
                                                                 <telerik:RadComboBox RenderMode="Auto" runat="server" ID="cb_lokasi_temp" EnableLoadOnDemand="True" 
                                                                     AutoPostBack="true" Skin="Glow"                                                                    
                                                                     HighlightTemplatedItems="true" Width="140px"
                                                                     OnItemsRequested="cb_jabatan_temp_ItemsRequested" 
-                                                                    OnSelectedIndexChanged="cb_jabatan_temp_SelectedIndexChanged">  
+                                                                    OnSelectedIndexChanged="cb_jabatan_temp_SelectedIndexChanged"
+                                                                    Text='<%# DataBinder.Eval(Container.DataItem, "LocationName") %>' >  
                                                                 </telerik:RadComboBox>
                                                             </EditItemTemplate>
                                                             <InsertItemTemplate>                                                                  

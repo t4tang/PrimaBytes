@@ -1230,8 +1230,9 @@ namespace PRIMA_HRIS.Page.PA.Employee
         private static DataTable GetDepartment(string text)
         {
             SqlDataAdapter adapter = new SqlDataAdapter("SELECT DepartmentCode, DepartmentName FROM MsDepartment " +
-                "WHERE (RecordStatus = 'A') AND DepartmentName LIKE @text + '%'",
+                "WHERE DivisionCode = @DivisionCode And (RecordStatus = 'A') AND DepartmentName LIKE @text + '%'",
             ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
+            adapter.SelectCommand.Parameters.AddWithValue("@DivisionCode", selected_divisi);
             adapter.SelectCommand.Parameters.AddWithValue("@text", text);
 
             DataTable data = new DataTable();
@@ -1329,9 +1330,35 @@ namespace PRIMA_HRIS.Page.PA.Employee
         }
         #endregion
         #region mutasi/pergerakan
+        public DataTable GetDataPergerakan(string nik)
+        {
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "SELECT * FROM v_employee_action WHERE EmployeeNo = @Nik AND RecordStatus = 'A' ";
+            //cmd.Parameters.AddWithValue("@project", project);
+            cmd.Parameters.AddWithValue("@Nik", nik);
+            cmd.CommandTimeout = 0;
+            cmd.ExecuteNonQuery();
+            sda = new SqlDataAdapter(cmd);
+
+            DataTable DT = new DataTable();
+
+            try
+            {
+                sda.Fill(DT);
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return DT;
+        }
         protected void rg_pergerakan_karyawan_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
         {
-            (sender as RadGrid).DataSource = new string[] { };
+            (sender as RadGrid).DataSource = GetDataPergerakan(selected_nik);
         }
 
         protected void rg_pergerakan_karyawan_DeleteCommand(object sender, GridCommandEventArgs e)
@@ -1472,11 +1499,11 @@ namespace PRIMA_HRIS.Page.PA.Employee
         {
             if ((sender as RadComboBox).Text == "PRIA")
             {
-                (sender as RadComboBox).SelectedValue = "L";
+                (sender as RadComboBox).SelectedValue = "M";
             }
             else
             {
-                (sender as RadComboBox).SelectedValue = "P";
+                (sender as RadComboBox).SelectedValue = "F";
             }
         }
 
@@ -1484,11 +1511,11 @@ namespace PRIMA_HRIS.Page.PA.Employee
         {
             if ((sender as RadComboBox).Text == "PRIA")
             {
-                (sender as RadComboBox).SelectedValue = "L";
+                (sender as RadComboBox).SelectedValue = "M";
             }
             else
             {
-                (sender as RadComboBox).SelectedValue = "P";
+                (sender as RadComboBox).SelectedValue = "F";
             }
         }
 
@@ -1506,7 +1533,16 @@ namespace PRIMA_HRIS.Page.PA.Employee
             cmd.Parameters.AddWithValue("@EmployeeNo", selected_nik);
             cmd.Parameters.AddWithValue("@FamilyType", (item.FindControl("cb_jenis_keluarga_insert_temp") as RadComboBox).SelectedValue);
             cmd.Parameters.AddWithValue("@FamilyName", (item.FindControl("txt_nama_keluarga_insert_temp") as RadTextBox).Text);
-            cmd.Parameters.AddWithValue("@FamilyBirthDate", (item.FindControl("dtp_tgl_lahir_insert_temp") as RadDatePicker).SelectedDate.Value);
+            DateTime? tgl_lahir = (item.FindControl("dtp_tgl_lahir_insert_temp") as RadDatePicker).SelectedDate;
+            if (tgl_lahir.HasValue)
+            {
+                cmd.Parameters.AddWithValue("@FamilyBirthDate", tgl_lahir.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@FamilyBirthDate", DBNull.Value);
+            }
+            //cmd.Parameters.AddWithValue("@FamilyBirthDate", (item.FindControl("dtp_tgl_lahir_insert_temp") as RadDatePicker).SelectedDate.Value);
             cmd.Parameters.AddWithValue("@FamilyEducation", DBNull.Value);
             cmd.Parameters.AddWithValue("@Remark", (item.FindControl("txt_keterangan_insert_temp") as RadTextBox).Text);
             cmd.Parameters.AddWithValue("@Gender", (item.FindControl("cb_jns_kelamin_insert_temp") as RadComboBox).SelectedValue);
