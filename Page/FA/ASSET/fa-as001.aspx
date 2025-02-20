@@ -312,6 +312,63 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td class="tdLabel">
+                                                        <telerik:RadLabel Text="Asset Class *" runat="server" ForeColor="YellowGreen" Skin="Glow"></telerik:RadLabel>
+                                                    </td>
+                                                    <td colspan="5">
+                                                        <telerik:RadComboBox RenderMode="Auto" ID="cb_asset_class" runat="server" Width="300px"  ReadOnly="true" Height="350px" ShowMoreResultsBox="true"
+                                                        DropDownWidth="700px" EnableLoadOnDemand="True" HighlightTemplatedItems="true" 
+                                                            MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" AutoPostBack="true" CausesValidation="false"
+                                                            Text='<%# DataBinder.Eval(Container, "DataItem.AK_NAME") %>' 
+                                                            OnItemsRequested="cb_asset_class_ItemsRequested" 
+                                                            OnSelectedIndexChanged="cb_asset_class_SelectedIndexChanged"
+                                                            OnPreRender="cb_asset_class_PreRender">
+                                                            <HeaderTemplate>
+                                                                <table style="width: 700px; font-size:smaller">
+                                                                    <tr>
+                                                                        <td style="width: 120px; text-align:left">
+                                                                            Code
+                                                                        </td>
+                                                                        <td style="width: 250px; text-align:left">
+                                                                            Asset Class
+                                                                        </td>
+                                                                        <td style="width: 70px; text-align:center">
+                                                                            Useful Life
+                                                                        </td>
+                                                                        <td style="width: 250px; text-align:left">
+                                                                            Methode
+                                                                        </td>                                                                
+                                                                    </tr>
+                                                                </table>                                                       
+                                                            </HeaderTemplate>
+                                                            <ItemTemplate>
+                                                                <table style="width: 700px; font-size:smaller">
+                                                                    <tr>
+                                                                        <td style="width: 120px; text-align:left">
+                                                                            <%# DataBinder.Eval(Container, "DataItem.AK_CODE")%>
+                                                                        </td>
+                                                                        <td style="width: 250px; text-align:left">
+                                                                            <%# DataBinder.Eval(Container, "DataItem.AK_NAME")%>
+                                                                        </td>
+                                                                        <td style="width: 70px; text-align:center">
+                                                                            <%# DataBinder.Eval(Container, "DataItem.exp_life_year")%>
+                                                                        </td>
+                                                                        <td style="width: 250px; text-align:left">
+                                                                            <%# DataBinder.Eval(Container, "DataItem.Method")%>
+                                                                        </td>                                                                
+                                                                    </tr>
+                                                                </table>
+
+                                                            </ItemTemplate>
+                                                            <FooterTemplate>
+                                                            </FooterTemplate> 
+
+                                                        </telerik:RadComboBox>
+                                                        <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator7" ControlToValidate="cb_asset_class" ForeColor="Red" 
+                                                        Font-Size="X-Small" Text="Required!" CssClass="required_validator"></asp:RequiredFieldValidator> 
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td class="tdLabel" style="width:100px">
                                                         <telerik:RadLabel Text="Reff Code" runat="server" ForeColor="YellowGreen" Skin="Glow"></telerik:RadLabel>
                                                     </td>
@@ -394,10 +451,20 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="tdLabel">
-                                                        <telerik:RadLabel Text="Material Code " runat="server" ForeColor="YellowGreen" Skin="Glow"></telerik:RadLabel>
+                                                        <telerik:RadLabel Text="Specification " runat="server" ForeColor="YellowGreen" Skin="Glow"></telerik:RadLabel>
+                                                    </td>
+                                                    <td colspan="5">
+                                                        <telerik:RadTextBox ID="txt_spec" runat="server" Width="430px" Enabled="true" RenderMode="Auto" ReadOnly="false" 
+                                                           Text='<%# DataBinder.Eval(Container, "DataItem.AssetSpec") %>' Skin="Glow" AutoPostBack="false">
+                                                        </telerik:RadTextBox>
+                                                    </td>
+                                                </tr>
+                                                <tr >
+                                                    <td class="tdLabel">
+                                                        <telerik:RadLabel Text="Material Code " runat="server" ForeColor="YellowGreen" Skin="Glow" Visible="false"></telerik:RadLabel>
                                                     </td>
                                                     <td>
-                                                        <telerik:RadTextBox ID="txt_material_code" ReadOnly="true" runat="server" Width="180px" Enabled="true" RenderMode="Auto"
+                                                        <telerik:RadTextBox ID="txt_material_code" ReadOnly="true" runat="server" Width="180px" Visible="false" Enabled="true" RenderMode="Auto"
                                                            Text='<%# DataBinder.Eval(Container, "DataItem.prod_code") %>' Skin="Glow" AutoPostBack="false">
                                                         </telerik:RadTextBox>
                                                     </td>
@@ -422,84 +489,19 @@
                                                         </telerik:RadComboBox>
                                                     </td>
                                                 </tr> 
-                                                <tr>
-                                                    <td class="tdLabel">
-                                                        <telerik:RadLabel Text="Specification " runat="server" ForeColor="YellowGreen" Skin="Glow"></telerik:RadLabel>
-                                                    </td>
-                                                    <td colspan="5">
-                                                        <telerik:RadTextBox ID="txt_spec" runat="server" Width="430px" Enabled="true" RenderMode="Auto" ReadOnly="false" 
-                                                           Text='<%# DataBinder.Eval(Container, "DataItem.AssetSpec") %>' Skin="Glow" AutoPostBack="false">
-                                                        </telerik:RadTextBox>
-                                                    </td>
-                                                </tr>
+                                                
                                             </table>
                                         </td>
                                         <td style="vertical-align: top; padding-left:35px">
                                             <table id="Table3" border="0" class="module">
                                                 
+                                                
                                                 <tr>
                                                     <td class="tdLabel">
-                                                        <telerik:RadLabel Text="Asset Class *" runat="server" ForeColor="YellowGreen" Skin="Glow"></telerik:RadLabel>
+                                                        <telerik:RadLabel Text="Asset Type" runat="server" ForeColor="YellowGreen" Visible="false" Skin="Glow"></telerik:RadLabel>
                                                     </td>
                                                     <td colspan="5">
-                                                        <telerik:RadComboBox RenderMode="Auto" ID="cb_asset_class" runat="server" Width="300px"  ReadOnly="true" Height="350px" ShowMoreResultsBox="true"
-                                                        DropDownWidth="700px" EnableLoadOnDemand="True" HighlightTemplatedItems="true" 
-                                                            MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" AutoPostBack="true" CausesValidation="false"
-                                                            Text='<%# DataBinder.Eval(Container, "DataItem.AK_NAME") %>' 
-                                                            OnItemsRequested="cb_asset_class_ItemsRequested" 
-                                                            OnSelectedIndexChanged="cb_asset_class_SelectedIndexChanged"
-                                                            OnPreRender="cb_asset_class_PreRender">
-                                                            <HeaderTemplate>
-                                                                <table style="width: 700px; font-size:smaller">
-                                                                    <tr>
-                                                                        <td style="width: 120px; text-align:left">
-                                                                            Code
-                                                                        </td>
-                                                                        <td style="width: 250px; text-align:left">
-                                                                            Asset Class
-                                                                        </td>
-                                                                        <td style="width: 70px; text-align:center">
-                                                                            Useful Life
-                                                                        </td>
-                                                                        <td style="width: 250px; text-align:left">
-                                                                            Methode
-                                                                        </td>                                                                
-                                                                    </tr>
-                                                                </table>                                                       
-                                                            </HeaderTemplate>
-                                                            <ItemTemplate>
-                                                                <table style="width: 700px; font-size:smaller">
-                                                                    <tr>
-                                                                        <td style="width: 120px; text-align:left">
-                                                                            <%# DataBinder.Eval(Container, "DataItem.AK_CODE")%>
-                                                                        </td>
-                                                                        <td style="width: 250px; text-align:left">
-                                                                            <%# DataBinder.Eval(Container, "DataItem.AK_NAME")%>
-                                                                        </td>
-                                                                        <td style="width: 70px; text-align:center">
-                                                                            <%# DataBinder.Eval(Container, "DataItem.exp_life_year")%>
-                                                                        </td>
-                                                                        <td style="width: 250px; text-align:left">
-                                                                            <%# DataBinder.Eval(Container, "DataItem.Method")%>
-                                                                        </td>                                                                
-                                                                    </tr>
-                                                                </table>
-
-                                                            </ItemTemplate>
-                                                            <FooterTemplate>
-                                                            </FooterTemplate> 
-
-                                                        </telerik:RadComboBox>
-                                                        <asp:RequiredFieldValidator runat="server" ID="RequiredFieldValidator7" ControlToValidate="cb_asset_class" ForeColor="Red" 
-                                                        Font-Size="X-Small" Text="Required!" CssClass="required_validator"></asp:RequiredFieldValidator> 
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="tdLabel">
-                                                        <telerik:RadLabel Text="Asset Type" runat="server" ForeColor="YellowGreen" Skin="Glow"></telerik:RadLabel>
-                                                    </td>
-                                                    <td colspan="5">
-                                                        <telerik:RadComboBox RenderMode="Auto" ID="cb_asset_type" runat="server" Width="250px"  ReadOnly="true"
+                                                        <telerik:RadComboBox RenderMode="Auto" ID="cb_asset_type" runat="server" Width="250px"  Visible="false" ReadOnly="true"
                                                         ShowMoreResultsBox="true"  EnableLoadOnDemand="True" HighlightTemplatedItems="true" 
                                                             MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" AutoPostBack="false" CausesValidation="false"
                                                             Text='<%# DataBinder.Eval(Container, "DataItem.AK_GROUP_NAME") %>' 
@@ -526,10 +528,10 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="tdLabel">
-                                                        <telerik:RadLabel Text="Tax Group:" runat="server" ForeColor="YellowGreen" Skin="Glow"></telerik:RadLabel>
+                                                        <telerik:RadLabel Text="Tax Group:" runat="server" ForeColor="YellowGreen" Visible="false" Skin="Glow"></telerik:RadLabel>
                                                     </td>
                                                     <td colspan="5">
-                                                        <telerik:RadComboBox RenderMode="Auto" ID="cb_taxx_group" runat="server" Width="250px"  ReadOnly="true"
+                                                        <telerik:RadComboBox RenderMode="Auto" ID="cb_taxx_group" runat="server" Visible="false" Width="250px"  ReadOnly="true"
                                                         DropDownWidth="300px" EnableLoadOnDemand="True" HighlightTemplatedItems="true" 
                                                             MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" AutoPostBack="False" CausesValidation="false"
                                                             Text='<%# DataBinder.Eval(Container, "DataItem.taxGroupName") %>' 
@@ -558,7 +560,7 @@
                                                         <telerik:RadComboBox RenderMode="Auto" ID="cb_project" runat="server" Width="350px" ReadOnly="true"
                                                         DropDownWidth="650px" EnableLoadOnDemand="True" HighlightTemplatedItems="true" 
                                                             MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" AutoPostBack="true" CausesValidation="false"
-                                                            Text='<%# DataBinder.Eval(Container, "DataItem.region_name") %>' 
+                                                            Text='<%# DataBinder.Eval(Container, "DataItem.LocationName") %>' 
                                                             OnItemsRequested="cb_project_ItemsRequested" 
                                                             OnSelectedIndexChanged="cb_project_SelectedIndexChanged"
                                                             OnPreRender="cb_project_PreRender">
@@ -578,10 +580,10 @@
                                                                 <table style="width: 400px; font-size:smaller">
                                                                     <tr>
                                                                         <td style="width: 150px;">
-                                                                            <%# DataBinder.Eval(Container, "DataItem.region_code")%>
+                                                                            <%# DataBinder.Eval(Container, "DataItem.LocationCode")%>
                                                                         </td>
                                                                         <td style="width: 250px;">
-                                                                            <%# DataBinder.Eval(Container, "DataItem.region_name")%>
+                                                                            <%# DataBinder.Eval(Container, "DataItem.LocationName")%>
                                                                         </td>                                                                
                                                                     </tr>
                                                                 </table>
@@ -596,15 +598,15 @@
                                                 </tr>
                                                 <tr >
                                                     <td class="tdLabel">
-                                                        <telerik:RadLabel Text="Cost Center" runat="server" Visible="false" ForeColor="YellowGreen" Skin="Glow"></telerik:RadLabel>
+                                                        <telerik:RadLabel Text="Cost Center" runat="server" Visible="true" ForeColor="YellowGreen" Skin="Glow"></telerik:RadLabel>
                                                     </td>
-                                                    <td style="vertical-align:top; text-align:left">                                   
-                                                        <telerik:RadComboBox RenderMode="Auto" ID="cb_cost_center" runat="server" Width="350px"  ReadOnly="true"
-                                                        DropDownWidth="650px" EnableLoadOnDemand="True" HighlightTemplatedItems="true" 
+                                                    <td >                                   
+                                                        <telerik:RadComboBox RenderMode="Auto" ID="cb_cost_center" runat="server" Width="250px" 
+                                                        DropDownWidth="250px" EnableLoadOnDemand="True" HighlightTemplatedItems="true" 
                                                             MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" AutoPostBack="true"  CausesValidation="false"
                                                             Text='<%# DataBinder.Eval(Container, "DataItem.CostCenterName") %>' 
                                                             OnItemsRequested="cb_cost_center_ItemsRequested" OnSelectedIndexChanged="cb_cost_center_SelectedIndexChanged"
-                                                            OnPreRender="cb_cost_center_PreRender" Visible="false">
+                                                            OnPreRender="cb_cost_center_PreRender" Visible="true">
                                                             <HeaderTemplate>
                                                                 <table style="width: 400px; font-size:smaller">
                                                                     <tr>
@@ -613,7 +615,7 @@
                                                                         </td>
                                                                         <td style="width: 250px;">
                                                                             Cost Center Name
-                                                                        </td>                                                                
+                                                                        </td>
                                                                     </tr>
                                                                 </table>                                                       
                                                             </HeaderTemplate>
@@ -691,10 +693,10 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="tdLabel">
-                                                        <telerik:RadLabel Text="PIC" runat="server" ForeColor="YellowGreen" Skin="Glow"></telerik:RadLabel>
+                                                        <telerik:RadLabel Text="PIC" runat="server" ForeColor="YellowGreen" Skin="Glow"  Visible="false"></telerik:RadLabel>
                                                     </td>
                                                     <td style="vertical-align:top; text-align:left">
-                                                        <telerik:RadComboBox RenderMode="Auto" ID="cb_pic" runat="server" Width="250px"  ReadOnly="true"
+                                                        <telerik:RadComboBox RenderMode="Auto" ID="cb_pic" runat="server" Width="250px"  ReadOnly="true"  Visible="false"
                                                         EnableLoadOnDemand="True" HighlightTemplatedItems="true" 
                                                             MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true"  CausesValidation="false"
                                                             Text='<%# DataBinder.Eval(Container, "DataItem.pic_name") %>' 
@@ -708,7 +710,7 @@
                                     </tr>                       
                                 </table>
                             </div>
-                            <div style=" width:100%; padding-top: 25px;" class="table_trx">
+                            <%--<div style=" width:100%; padding-top: 25px;" class="table_trx">
                                 <telerik:RadTabStrip RenderMode="Auto" runat="server" ID="RadTabStrip1"  Orientation="HorizontalTop" Width="97%" AutoPostBack="false"
                                 SelectedIndex="0" MultiPageID="RadMultiPage1" Skin="Glow">
                                 <Tabs>
@@ -736,8 +738,6 @@
                                                                     Currency 
                                                                 </td>
                                                                 <td>
-                                                                    <%--<telerik:RadTextBox ReadOnly="true" ID="txt_currency" Width="70px" runat="server" >
-                                                                        </telerik:RadTextBox>--%>
                                                                     <telerik:RadComboBox RenderMode="Auto" ID="cb_currency" runat="server" Width="120px"
                                                                         EnableLoadOnDemand="True" HighlightTemplatedItems="true" AutoPostBack="true"
                                                                         MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" 
@@ -747,7 +747,7 @@
                                                                     </telerik:RadComboBox>
                                                                 </td>
                                                                 <td style="padding-left:10px" >
-                                                                    <%--Kurs--%> 
+                                                                    
                                                                 </td>
                                                                 <td>
                                                                     <telerik:RadTextBox  RenderMode="Auto" runat="server" ID="txt_tax_kurs" Width="100px" NumberFormat-AllowRounding="true"
@@ -847,24 +847,24 @@
                                                                 <td >
                                                                     <telerik:RadTextBox ReadOnly="true" ID="txt_appreciation" Width="70px" runat="server" Skin="Glow"
                                                                         Text='<%# DataBinder.Eval(Container, "DataItem.mtd_per") %>' EnabledStyle-HorizontalAlign="Center">
-                                                                        </telerik:RadTextBox> <%--% --%>                             
+                                                                        </telerik:RadTextBox>                              
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>
-                                                                    <%--PreDepre--%>
+                                                                    
                                                                 </td>
                                                                 <td >
                                                                     <telerik:RadNumericTextBox Visible="false" RenderMode="Auto" runat="server" ID="txt_pre_depre_month" Width="70px" NumberFormat-AllowRounding="true"
                                                                         NumberFormat-KeepNotRoundedValue="true" AllowOutOfRangeAutoCorrect="false" Value="0" EnabledStyle-HorizontalAlign="Center"
                                                                         onkeydown="blurTextBox(this, event)" Type="Number" NumberFormat-DecimalDigits="0" Skin="Glow"
                                                                         Text='<%# DataBinder.Eval(Container, "DataItem.susut_month", "{0:#,###,###0.00}") %>'>
-                                                                        </telerik:RadNumericTextBox> <%--Month --%>                               
+                                                                        </telerik:RadNumericTextBox>                               
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td >
-                                                                    <%--PreDepre (Value)--%>
+                                                                    
                                                                 </td>
                                                                 <td >
                                                                     <telerik:RadNumericTextBox  Visible="false" RenderMode="Auto" runat="server" ID="txt_pre_depre_val" Width="150px" NumberFormat-AllowRounding="true"
@@ -915,18 +915,7 @@
                                                                     </telerik:RadNumericTextBox>
                                                                 </td>
                                                             </tr>
-                                                            <%--<tr >
-                                                                <td >
-                                                                    HM Start:
-                                                                </td>
-                                                                <td>
-                                                                        <telerik:RadNumericTextBox  RenderMode="Auto" runat="server" ID="txt_hm_start" Width="100px" NumberFormat-AllowRounding="true"
-                                                                        NumberFormat-KeepNotRoundedValue="true" AllowOutOfRangeAutoCorrect="false"  Value="0" EnabledStyle-HorizontalAlign="Right"
-                                                                        onkeydown="blurTextBox(this, event)" Type="Number" NumberFormat-DecimalDigits="2" >
-                                                                    </telerik:RadNumericTextBox>
-                                            
-                                                                </td>
-                                                            </tr>--%>
+                                                            
                                                             <tr >
                                                                 <td >
                                                                     HM Min
@@ -959,13 +948,7 @@
                                                                     <telerik:RadTextBox ReadOnly="true" ID="txt_status" Width="150px" runat="server" Skin="Glow"
                                                                         Text='<%# DataBinder.Eval(Container, "DataItem.status") %>' >
                                                                     </telerik:RadTextBox>
-                                                                    <%--<telerik:RadComboBox RenderMode="Auto" ID="cb_status_reg" runat="server" Width="120px"
-                                                                        EnableLoadOnDemand="True" HighlightTemplatedItems="true" AutoPostBack="true"
-                                                                        MarkFirstMatch="true" Skin="Glow" EnableVirtualScrolling="true" 
-                                                                        Text='<%# DataBinder.Eval(Container, "DataItem.status") %>' 
-                                                                        OnItemsRequested="cb_status_reg_ItemsRequested" OnSelectedIndexChanged="cb_status_reg_SelectedIndexChanged"
-                                                                        OnPreRender="cb_status_reg_PreRender" >                                                                                                     
-                                                                    </telerik:RadComboBox>   --%>                            
+                                                                                                
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -987,7 +970,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td >
-                                                                    <%--Depre Last Posting--%>
+                                                                    
                                                                 </td>
                                                                 <td colspan="3">
                                                                     <telerik:RadDatePicker Visible="false" ID="dtp_depre_last_post"  runat="server" MinDate="1/1/1900" Width="150px" RenderMode="Auto"
@@ -1207,7 +1190,7 @@
                     
                                     </telerik:RadPageView>
                                 </telerik:RadMultiPage>
-                            </div>
+                            </div>--%>
                         </FormTemplate>
                     </EditFormSettings>
                 </MasterTableView>

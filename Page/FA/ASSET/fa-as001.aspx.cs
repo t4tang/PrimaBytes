@@ -164,7 +164,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
 
             for (int i = itemOffset; i < endOffset; i++)
             {
-                (sender as RadComboBox).Items.Add(new RadComboBoxItem(data.Rows[i]["region_name"].ToString(), data.Rows[i]["region_name"].ToString()));
+                (sender as RadComboBox).Items.Add(new RadComboBoxItem(data.Rows[i]["LocationName"].ToString(), data.Rows[i]["LocationName"].ToString()));
             }
         }
         private static DataTable GetProjectPrm(string text, string uid)
@@ -258,7 +258,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
                 cmd = new SqlCommand();
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = con;
-                cmd.CommandText = "UPDATE MS_ASSET SET userid = @Usr, lastupdate = GETDATE(), stedit = '4' WHERE (asset_id = @asset_id)";
+                cmd.CommandText = "UPDATE MsAsset SET userid = @Usr, lastupdate = GETDATE(), stedit = '4' WHERE (asset_id = @asset_id)";
                 cmd.Parameters.AddWithValue("@asset_id", asset_code);
                 cmd.Parameters.AddWithValue("@Usr", Request.Cookies["authcookie"]["uid"]);
                 cmd.ExecuteNonQuery();
@@ -329,8 +329,8 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT d.part_code, d.part_desc, d.part_qty, d.part_unit, reg.region_name, cc.CostCenterName, 'Unregister' AS [status] " +
-                              "FROM fleet_grd d, fleet_grh h, ms_jobsite reg, ms_cost_center cc " +
+            cmd.CommandText = "SELECT d.part_code, d.part_desc, d.part_qty, d.part_unit, reg.LocationName, cc.CostCenterName, 'Unregister' AS [status] " +
+                              "FROM fleet_grd d, fleet_grh h, MsLocation reg, ms_cost_center cc " +
                               "WHERE d.doc_code = h.doc_code AND reg.region_code = h.region_code AND cc.CostCenter = h.dept_code AND d.doc_code = @text AND d.nomer = @nomer";
             cmd.Parameters.AddWithValue("@text", (sender as RadComboBox).Text);
             cmd.Parameters.AddWithValue("@nomer", (sender as RadComboBox).SelectedValue);
@@ -344,7 +344,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
                 txt_qty.Text = "1";
                 cb_uom.Text = dr["part_unit"].ToString();
                 txt_spec.Text = dr["part_desc"].ToString();
-                cb_project.Text = dr["region_name"].ToString();
+                cb_project.Text = dr["LocationName"].ToString();
                 cb_cost_center.Text = dr["CostCenterName"].ToString();
                 //cb_status_reg.Text = dr["status"].ToString();
                 txt_status.Text = dr["status"].ToString();
@@ -358,7 +358,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
         #region UOM
         private static DataTable GetUoM(string text)
         {
-            SqlDataAdapter adapter = new SqlDataAdapter("SELECT unit_code, unit_name FROM ms_uom WHERE stEdit != 4 AND unit_name LIKE @text + '%'",
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT unit_code, unit_name FROM MsUom WHERE RecordStatus != D AND unit_name LIKE @text + '%'",
             ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
             adapter.SelectCommand.Parameters.AddWithValue("@text", text);
 
@@ -387,7 +387,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT unit_code FROM ms_uom WHERE unit_name = '" + (sender as RadComboBox).Text + "'";
+            cmd.CommandText = "SELECT unit_code FROM MsUom WHERE unit_name = '" + (sender as RadComboBox).Text + "'";
             SqlDataReader dr;
             dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -405,7 +405,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT unit_code FROM ms_uom WHERE unit_name = '" + (sender as RadComboBox).Text + "'";
+            cmd.CommandText = "SELECT unit_code FROM MsUom WHERE unit_name = '" + (sender as RadComboBox).Text + "'";
             SqlDataReader dr;
             dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -425,7 +425,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
             SqlDataAdapter adapter = new SqlDataAdapter("SELECT AK_CODE, upper(AK_NAME) as AK_NAME, exp_life_year, " +
             "(CASE mtd WHEN 'S' THEN 'STRAIGHT LINE'  WHEN 'D' THEN 'DOUBLE DECLINE' WHEN 'T' THEN 'DECLINING BALANCE' WHEN 'N' THEN 'NONE' " +
-            "WHEN 'H' THEN 'HM' WHEN 'K' THEN 'KM' END) AS Method FROM MS_ASSET_CLASS WHERE stedit <> '4' AND AK_NAME LIKE @text + '%'", con);
+            "WHEN 'H' THEN 'HM' WHEN 'K' THEN 'KM' END) AS Method FROM MsAssetClass WHERE stedit <> '4' AND AK_NAME LIKE @text + '%'", con);
             adapter.SelectCommand.Parameters.AddWithValue("@text", text);
             DataTable dt = new DataTable();
             adapter.Fill(dt);
@@ -474,7 +474,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "SELECT *, (CASE mtd WHEN 'S' THEN 'STRAIGHT LINE'  WHEN 'D' THEN 'DOUBLE DECLINE' WHEN 'T' THEN 'DECLINING BALANCE' " +
                     "WHEN 'N' THEN 'NONE' WHEN 'H' THEN 'HM' WHEN 'K' THEN 'KM' END) AS Method " +
-                    "FROM MS_ASSET_CLASS WHERE stEdit != 4 AND AK_NAME LIKE '%' + '" + (sender as RadComboBox).Text.Trim() + "' + '%'";
+                    "FROM MsAssetClass WHERE stEdit != 4 AND AK_NAME LIKE '%' + '" + (sender as RadComboBox).Text.Trim() + "' + '%'";
                 SqlDataReader dr;
                 dr = cmd.ExecuteReader();
                 while (dr.Read())
@@ -520,7 +520,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT AK_CODE FROM MS_ASSET_CLASS WHERE AK_NAME = '" + (sender as RadComboBox).Text + "'";
+            cmd.CommandText = "SELECT AK_CODE FROM MsAssetClass WHERE AK_NAME = '" + (sender as RadComboBox).Text + "'";
             SqlDataReader dr;
             dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -536,8 +536,8 @@ namespace PRIMA_HRIS.Page.FA.ASSET
         #region Asset Type
         private static DataTable GetAssetType(string text)
         {
-            SqlDataAdapter adapter = new SqlDataAdapter("SELECT upper(MS_ASSET_TYPE.AK_GROUP_NAME) as AK_GROUP_NAME, MS_ASSET_TYPE.AK_GROUP " +
-                "FROM MS_ASSET_TYPE WHERE MS_ASSET_TYPE.stEdit <> '4' AND AK_GROUP_NAME LIKE @text + '%'",
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT upper(MsAssetType.AK_GROUP_NAME) as AK_GROUP_NAME, MsAssetType.AK_GROUP " +
+                "FROM MsAssetType WHERE MsAssetType.stEdit <> '4' AND AK_GROUP_NAME LIKE @text + '%'",
             ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
             adapter.SelectCommand.Parameters.AddWithValue("@text", text);
 
@@ -566,7 +566,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT AK_GROUP FROM MS_ASSET_TYPE WHERE AK_GROUP_NAME = '" + (sender as RadComboBox).Text + "'";
+            cmd.CommandText = "SELECT AK_GROUP FROM MsAssetType WHERE AK_GROUP_NAME = '" + (sender as RadComboBox).Text + "'";
             SqlDataReader dr;
             dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -581,7 +581,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT AK_GROUP FROM MS_ASSET_TYPE WHERE AK_GROUP_NAME = '" + (sender as RadComboBox).Text + "'";
+            cmd.CommandText = "SELECT AK_GROUP FROM MsAssetType WHERE AK_GROUP_NAME = '" + (sender as RadComboBox).Text + "'";
             SqlDataReader dr;
             dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -597,7 +597,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
         #region Asset Status
         private static DataTable GetAssetSts(string text)
         {
-            SqlDataAdapter adapter = new SqlDataAdapter("SELECT ms_asset_status.status_code , upper(ms_asset_status.Status_name) as Status_name FROM ms_asset_status WHERE ms_asset_status.stEdit <> '4' AND ms_asset_status.Status_name LIKE @text + '%'",
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT MsAssetStatus.status_code , upper(MsAssetStatus.Status_name) as Status_name FROM MsAssetStatus WHERE MsAssetStatus.stEdit <> '4' AND MsAssetStatus.Status_name LIKE @text + '%'",
             ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
             adapter.SelectCommand.Parameters.AddWithValue("@text", text);
 
@@ -626,7 +626,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT status_code FROM ms_asset_status WHERE Status_name = '" + (sender as RadComboBox).Text + "'";
+            cmd.CommandText = "SELECT status_code FROM MsAssetStatus WHERE Status_name = '" + (sender as RadComboBox).Text + "'";
             SqlDataReader dr;
             dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -641,7 +641,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT status_code FROM ms_asset_status WHERE Status_name = '" + (sender as RadComboBox).Text + "'";
+            cmd.CommandText = "SELECT status_code FROM MsAssetStatus WHERE Status_name = '" + (sender as RadComboBox).Text + "'";
             SqlDataReader dr;
             dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -654,7 +654,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
         #region Asset Tax Group
         private static DataTable GetAssetTaxGrp(string text)
         {
-            SqlDataAdapter adapter = new SqlDataAdapter("SELECT  ms_asset_tax_group.TaxGroup, ms_asset_tax_group.TaxGroupName FROM ms_asset_tax_group WHERE (ms_asset_tax_group.stEdit <> '4') AND ms_asset_tax_group.TaxGroupName LIKE @text + '%'",
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT  MsAssetTaxGroup.TaxGroup, MsAssetTaxGroup.TaxGroupName FROM MsAssetTaxGroup WHERE (MsAssetTaxGroup.stEdit <> '4') AND MsAssetTaxGroup.TaxGroupName LIKE @text + '%'",
             ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
             adapter.SelectCommand.Parameters.AddWithValue("@text", text);
 
@@ -684,7 +684,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT TaxGroup FROM ms_asset_tax_group WHERE TaxGroupName = '" + (sender as RadComboBox).Text + "'";
+            cmd.CommandText = "SELECT TaxGroup FROM MsAssetTaxGroup WHERE TaxGroupName = '" + (sender as RadComboBox).Text + "'";
             SqlDataReader dr;
             dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -699,7 +699,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT TaxGroup FROM ms_asset_tax_group WHERE TaxGroupName = '" + (sender as RadComboBox).Text + "'";
+            cmd.CommandText = "SELECT TaxGroup FROM MsAssetTaxGroup WHERE TaxGroupName = '" + (sender as RadComboBox).Text + "'";
             SqlDataReader dr;
             dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -714,13 +714,13 @@ namespace PRIMA_HRIS.Page.FA.ASSET
         {
             SqlConnection con = new SqlConnection(
             ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
-            SqlDataAdapter adapter = new SqlDataAdapter("SELECT region_code, upper(region_name) as region_name FROM v_user_jobsite WHERE kduser = '" + Request.Cookies["authcookie"]["uid"] + "' AND region_name LIKE @text + '%'", con);
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT region_code, upper(LocationName) as LocationName FROM v_user_jobsite WHERE kduser = '" + Request.Cookies["authcookie"]["uid"] + "' AND LocationName LIKE @text + '%'", con);
             adapter.SelectCommand.Parameters.AddWithValue("@text", text);
             DataTable dt = new DataTable();
             adapter.Fill(dt);
 
-            cb.DataTextField = "region_name";
-            cb.DataValueField = "region_name";
+            cb.DataTextField = "LocationName";
+            cb.DataValueField = "LocationName";
             cb.DataSource = dt;
             cb.DataBind();
         }
@@ -736,7 +736,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT region_code FROM ms_jobsite WHERE region_name = '" + (sender as RadComboBox).Text + "'";
+            cmd.CommandText = "SELECT LocationCode FROM MsLocation WHERE LocationName = '" + (sender as RadComboBox).Text + "'";
             SqlDataReader dr;
             dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -751,7 +751,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT region_code FROM ms_jobsite WHERE region_name = '" + (sender as RadComboBox).Text + "'";
+            cmd.CommandText = "SELECT LocationCode FROM MsLocation WHERE LocationName = '" + (sender as RadComboBox).Text + "'";
             SqlDataReader dr;
             dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -818,7 +818,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
         {
             SqlConnection con = new SqlConnection(
             ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
-            SqlDataAdapter adapter = new SqlDataAdapter("SELECT unit_code, upper(unit_name) as unit_name, model_no, region_code FROM ms_unit WHERE stEdit != 4 " +
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT unit_code, upper(unit_name) as unit_name, model_no, region_code FROM MsUnit WHERE stEdit != 4 " +
                 "AND unit_name LIKE @text + '%' AND region_code = @region_code", con);
             adapter.SelectCommand.Parameters.AddWithValue("@text", text);
             adapter.SelectCommand.Parameters.AddWithValue("@region_code", project);
@@ -844,7 +844,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
         #region Asset PIC
         private static DataTable GetAssetPIC(string text)
         {
-            SqlDataAdapter adapter = new SqlDataAdapter("SELECT Pic_Code, upper(pic_name) as pic_name FROM ms_asset_pic WHERE stEdit <> '4' AND pic_name LIKE @text + '%'",
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT Pic_Code, upper(pic_name) as pic_name FROM MsAssetPic WHERE stEdit <> '4' AND pic_name LIKE @text + '%'",
             ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString);
             adapter.SelectCommand.Parameters.AddWithValue("@text", text);
 
@@ -873,7 +873,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT Pic_Code FROM ms_asset_pic WHERE pic_name = '" + (sender as RadComboBox).Text + "'";
+            cmd.CommandText = "SELECT Pic_Code FROM MsAssetPic WHERE pic_name = '" + (sender as RadComboBox).Text + "'";
             SqlDataReader dr;
             dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -888,7 +888,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "SELECT Pic_Code FROM ms_asset_pic WHERE pic_name = '" + (sender as RadComboBox).Text + "'";
+            cmd.CommandText = "SELECT Pic_Code FROM MsAssetPic WHERE pic_name = '" + (sender as RadComboBox).Text + "'";
             SqlDataReader dr;
             dr = cmd.ExecuteReader();
             while (dr.Read())
@@ -923,7 +923,7 @@ namespace PRIMA_HRIS.Page.FA.ASSET
             //        cb_asset_status.Text = sdr["status_name"].ToString();
             //        cb_taxx_group.Text = sdr["taxGroupName"].ToString();
             //        txt_serial_number.Text = sdr["SerialNumber"].ToString();
-            //        cb_project.Text = sdr["region_name"].ToString();
+            //        cb_project.Text = sdr["LocationName"].ToString();
             //        cb_cost_center.Text = sdr["CostCenterName"].ToString();
             //        cb_unit.Text = sdr["unit_code"].ToString();
             //        cb_pic.Text = sdr["dept_name"].ToString();
@@ -1574,36 +1574,36 @@ namespace PRIMA_HRIS.Page.FA.ASSET
 
         protected void RadGrid1_ItemDataBound(object sender, GridItemEventArgs e)
         {
-            if (e.Item is GridEditFormItem && e.Item.IsInEditMode)
-            {
-                var item = e.Item as GridEditFormItem;
+            //if (e.Item is GridEditFormItem && e.Item.IsInEditMode)
+            //{
+            //    var item = e.Item as GridEditFormItem;
 
-                RadNumericTextBox txt_pur_cost = item.FindControl("txt_pur_cost") as RadNumericTextBox;
-                RadNumericTextBox txt_acq_val = item.FindControl("txt_acq_val") as RadNumericTextBox;
-                RadNumericTextBox txt_salvage_val = item.FindControl("txt_salvage_val") as RadNumericTextBox;
-                RadNumericTextBox txt_uselife_hour = item.FindControl("txt_uselife_hour") as RadNumericTextBox;
-                RadNumericTextBox txt_hm_min = item.FindControl("txt_hm_min") as RadNumericTextBox;
-                RadDatePicker dtp_depre_start = item.FindControl("dtp_depre_start") as RadDatePicker;
+            //    RadNumericTextBox txt_pur_cost = item.FindControl("txt_pur_cost") as RadNumericTextBox;
+            //    RadNumericTextBox txt_acq_val = item.FindControl("txt_acq_val") as RadNumericTextBox;
+            //    RadNumericTextBox txt_salvage_val = item.FindControl("txt_salvage_val") as RadNumericTextBox;
+            //    RadNumericTextBox txt_uselife_hour = item.FindControl("txt_uselife_hour") as RadNumericTextBox;
+            //    RadNumericTextBox txt_hm_min = item.FindControl("txt_hm_min") as RadNumericTextBox;
+            //    RadDatePicker dtp_depre_start = item.FindControl("dtp_depre_start") as RadDatePicker;
 
-                if (e.Item.OwnerTableView.IsItemInserted)
-                {
-                    txt_pur_cost.Value = 0;
-                    txt_acq_val.Value = 0;
-                    txt_salvage_val.Value = 0;
-                    txt_uselife_hour.Value = 0;
-                    txt_hm_min.Value = 0;
-                    dtp_depre_start.SelectedDate = DateTime.Today;
-                }
-                else
-                {
-                    txt_pur_cost.ReadOnly = true;
-                    txt_acq_val.ReadOnly = true;
-                    txt_salvage_val.ReadOnly = true;
-                    txt_uselife_hour.ReadOnly = true;
-                    //dtp_depre_start.Enabled = false;
-                }
+            //    if (e.Item.OwnerTableView.IsItemInserted)
+            //    {
+            //        txt_pur_cost.Value = 0;
+            //        txt_acq_val.Value = 0;
+            //        txt_salvage_val.Value = 0;
+            //        txt_uselife_hour.Value = 0;
+            //        txt_hm_min.Value = 0;
+            //        dtp_depre_start.SelectedDate = DateTime.Today;
+            //    }
+            //    else
+            //    {
+            //        txt_pur_cost.ReadOnly = true;
+            //        txt_acq_val.ReadOnly = true;
+            //        txt_salvage_val.ReadOnly = true;
+            //        txt_uselife_hour.ReadOnly = true;
+            //        //dtp_depre_start.Enabled = false;
+            //    }
 
-            }
+            //}
         }
     }
 }
