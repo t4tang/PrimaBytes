@@ -106,8 +106,7 @@
             </tr>
         </table>
     </div>
-    <div  class="scroller" runat="server" style="overflow-y:auto; height:575px; font-size:small; font-family:Tahoma; background-color:#303d3f;">
-                    
+    <div  class="scroller" runat="server" style="overflow-y:auto; height:575px; font-size:small; font-family:Tahoma; background-color:#303d3f;">                    
         <div runat="server" style="overflow:auto; width:99%; height:unset; padding-top:10px">
             <telerik:RadTabStrip RenderMode="Auto" runat="server" ID="RadTabStrip1"  Orientation="HorizontalTop" Width="97%" 
             AutoPostBack="false" SelectedIndex="0" MultiPageID="RadMultiPage1" Skin="Glow">

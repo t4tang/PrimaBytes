@@ -67,11 +67,10 @@ namespace PRIMA_HRIS.Page.PA.Employee
            
             con.Open();
             cmd = new SqlCommand();
-            cmd.CommandType = CommandType.Text;
+            cmd.CommandType = CommandType.StoredProcedure;
             cmd.Connection = con;
-            cmd.CommandText = "SELECT * FROM v_employee WHERE RecordStatus = 'A' " +
-                                "AND LocationCode IN (SELECT region_code FROM MsUsersJobsite WHERE MsUsersJobsite.kduser = @kdUser)";
-            //cmd.Parameters.AddWithValue("@project", project);
+            cmd.CommandText = "spGetEmployee";
+            cmd.Parameters.AddWithValue("@recordStatus", "A");
             cmd.Parameters.AddWithValue("@kdUser", uid);
             cmd.CommandTimeout = 0;
             cmd.ExecuteNonQuery();
@@ -92,14 +91,14 @@ namespace PRIMA_HRIS.Page.PA.Employee
         }
         protected void RadGrid1_NeedDataSource(object sender, Telerik.Web.UI.GridNeedDataSourceEventArgs e)
         {
-            if (Request.Cookies["authcookie"]["site"].ToString() == "HO")
-            {
-                (sender as RadGrid).DataSource = GetDataTable("");
-            }
-            else
-            {
+            //if (Request.Cookies["authcookie"]["site"].ToString() == "HO")
+            //{
+            //    (sender as RadGrid).DataSource = GetDataTable("");
+            //}
+            //else
+            //{
                 (sender as RadGrid).DataSource = GetDataTable(Request.Cookies["authcookie"]["uid"].ToString());
-            }
+            //}
         }
         protected void RadGrid1_SelectedIndexChanged(object sender, EventArgs e)
         {
