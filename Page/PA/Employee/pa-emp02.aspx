@@ -280,7 +280,6 @@
                                         <HeaderStyle Width="90px" />
                                         <ItemStyle Width="90px" />
                                     </telerik:GridBoundColumn>
-
                                     <telerik:GridBoundColumn DataField="KODE_PROPINSI" UniqueName="KODE_PROPINSI" >
                                         <HeaderStyle Width="0" />
                                         <ItemStyle Width="0" HorizontalAlign="Center" />
