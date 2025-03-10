@@ -1,0 +1,418 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Main.master.cs" Inherits="PRIMA_HRIS.Main" %>
+
+<!DOCTYPE html>
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title style="margin-left:15px">Prima Connect</title>
+    <%--<link rel="stylesheet" type="text/css" href="Styles/common.css" />--%>
+    <link href="styles/custom-cs.css" rel="stylesheet" />
+    <link href="styles/base.css" rel="stylesheet" />
+    <link href="styles/masterpg.css" rel="stylesheet" />
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="script/jquery-1.9.1.min.js" type="text/javascript"></script>
+     <style type="text/css">
+         body {
+            font: 14px/1.4 Helvetica, Arial, sans-serif;
+        }
+ 
+        button.RadButton span.rbIcon {
+            vertical-align: sub;
+        }
+ 
+        .rdfLabel.rdfBlock {
+            margin-top: 6px;
+        }        
+        .someDiv {
+            position:fixed;
+            width:100%;
+            height:30px;
+            /*margin-left:-25%;*/
+            background:#f4efef;
+            bottom:0px;   
+            font-family:'Century Gothic';
+            font-size:smaller;
+            color:#282b4f;
+            padding:2px 2px 0px 15px;
+            /*border-top-color:deeppink;*/
+            /*border-top-style:solid;*/
+            /*border-top-width:thin;*/
+            /*left:50%;*/
+        }
+
+        html, body {
+          height: 100%;
+        }
+
+        .full-height {
+          height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server" >
+        <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnablePageMethods="True">
+            <Scripts>
+                <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js" />
+                <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQuery.js" />
+                <asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQueryInclude.js" />
+            </Scripts>
+        </telerik:RadScriptManager>
+
+        <div class="page" style="background-color:#272626; height:100%;">
+        <%--<div class="full-height" style="background-color:#303d3f" > --%>
+            <div class="main-header clear"  style="border-bottom-style:solid; border-bottom-color:darkgrey; border-bottom-width:0px; margin-bottom:0px; height:45px; 
+                   background-image:url(../../../../images/header_about.gif); padding:15px 0px 0px 10px">
+                <div class="home-btn">
+                    <span class="icon">
+                        <telerik:RadLabel runat="server" Text="PRIMA" style="font-weight: bold; 
+                        color:yellowgreen; font-size:26px; vertical-align:top; "></telerik:RadLabel> 
+                        <telerik:RadLabel runat="server" Text="Bytes" style="font-weight:lighter; 
+                        color:orangered; font-size:26px; font-family:Mistral; vertical-align:top;"></telerik:RadLabel>
+                    </span>
+                    <span class="icon" style="float:right; padding-right:30px">
+                        <a class="logo" href="../../../Login.aspx">
+                            <%--<label style="font-size:x-small; font-weight:lighter; color:white; padding-bottom:60px">Logout</label>--%>
+                            <img src="../../../images/logout.png" height="27" width="25"  alt="logo" />
+                          
+                        </a>
+                    </span>
+                </div>
+                <asp:UpdatePanel runat="server">
+                    <ContentTemplate>
+                        <telerik:RadNavigation ID="mainNavigation" runat="server" CssClass="header-info" EnableEmbeddedSkins="false">
+                            <Nodes>
+                                <%--<telerik:NavigationNode ID="NavNode1" CssClass="user" ></telerik:NavigationNode>--%>
+                            </Nodes>
+                        </telerik:RadNavigation>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+                <%--<div style="border-bottom-style:solid; border-bottom-color:darkgrey; border-bottom-width:0px; margin-bottom:2px; height:45px; 
+                   background-image:url(../../../../images/header_about.gif); padding:15px 0px 0px 10px" >--%>
+                    <%--<a href="../../../../Main.aspx" class="logo" style="text-align:left; padding-top:15px" hreflang="aa">
+                        <telerik:RadLabel runat="server" Text="MY" style="font-weight: bold; 
+                            color:yellowgreen; font-size:30px; font-family:Mistral"></telerik:RadLabel>
+                        <telerik:RadLabel runat="server" Text="PRIMA" style="font-weight:normal; 
+                            color:orangered; font-size:30px; font-family:Mistral;"></telerik:RadLabel>
+                    </a>--%>
+                    <%--<div style="text-align:right; margin-top:-30px; padding-right:20px" runat="server">--%>
+                        <%--<asp:Image runat="server" CssClass="img-profile rounded-circle" ImageUrl="~/img/boy.png" style="max-width: 60px" />--%>
+                        <%--<telerik:RadLabel ID="lbl_user_name" runat="server" Skin="Silk" Font-Names="Arial" ForeColor="Highlight" Font-Size="Small"></telerik:RadLabel>
+                    
+                    </div>   --%> 
+                    <%--<div style="text-align:right; margin-top:-10px; padding-right:26px" runat="server">--%>
+                    <%--<asp:LinkButton runat="server" ID="LinkButton1" Text="Logout" ForeColor="#ff0000" Font-Names="Calibri" Font-Underline="true" Font-Size="Smaller"
+                            PostBackUrl="~/Home/Login.aspx"></asp:LinkButton>--%>
+                        
+                <%--</div>--%>
+            </div>
+                <%--<asp:UpdatePanel runat="server">
+                    <ContentTemplate>
+                        <telerik:RadNavigation ID="mainNavigation" runat="server" CssClass="header-info" EnableEmbeddedSkins="false">
+                            <Nodes>                                
+                               <telerik:NavigationNode ID="NavNode1" CssClass="user" Visible="false" ></telerik:NavigationNode>
+                            </Nodes>
+                        </telerik:RadNavigation>
+                    </ContentTemplate>
+                </asp:UpdatePanel>--%>
+        <%--</div>--%>
+            <div class="container" style="border-top-color:greenyellow; border-top-style:solid; border-top-width:3px; margin-top:2px;">                
+                    <telerik:RadMenu RenderMode="Lightweight" runat="server" ID="RadMenu1" Skin="Glow" style=" z-index:1000; " >
+                        <DefaultGroupSettings Height="270px" />
+                        <Items>
+                            <telerik:RadMenuItem Text="Personal Admin" >
+                                <ContentTemplate>
+                                    <telerik:RadSiteMap runat="server" ID="PA" Skin="Glow" CssClass="itemContent asia" Height="100">
+                                        <DefaultLevelSettings ListLayout-RepeatColumns="1" ListLayout-RepeatDirection="Vertical"></DefaultLevelSettings>
+                                        <Nodes>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Employee" NavigateUrl="Page/PA/Employee/pa-emp01.aspx"></telerik:RadSiteMapNode>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Upload Employee" NavigateUrl="Page/PA/Employee/pa-emp02.aspx" ></telerik:RadSiteMapNode>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Employee Action" NavigateUrl="Page/PA/Employee/pa-emp03.aspx"></telerik:RadSiteMapNode>
+                                        </Nodes>
+                                    </telerik:RadSiteMap>
+                                </ContentTemplate>
+                            </telerik:RadMenuItem>
+                            <telerik:RadMenuItem Text="Time Management" Visible="false">
+                                <ContentTemplate>
+                                    <telerik:RadSiteMap runat="server" ID="TM" Skin="Glow" CssClass="itemContent africa" Height="100">
+                                        <DefaultLevelSettings ListLayout-RepeatColumns="1" ListLayout-RepeatDirection="Vertical"></DefaultLevelSettings>
+                                        <Nodes>
+                                            <telerik:RadSiteMapNode Visible="false" Text="" NavigateUrl="*"></telerik:RadSiteMapNode>
+                                        </Nodes>
+                                    </telerik:RadSiteMap>
+                                </ContentTemplate>
+                            </telerik:RadMenuItem>
+                            <telerik:RadMenuItem Text="General Admin">
+                                <ContentTemplate>
+                                    <telerik:RadSiteMap runat="server" ID="PY" Skin="Glow" CssClass="itemContent northAmerica" Height="100">
+                                        <DefaultLevelSettings ListLayout-RepeatColumns="1" ListLayout-RepeatDirection="Vertical"></DefaultLevelSettings>
+                                        <Nodes>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Financing Submission (FPP)" NavigateUrl="Page/GA/Fpp/ga-fpp01.aspx"></telerik:RadSiteMapNode>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Ticket Request" NavigateUrl="Page/GA/Ticket/Request/ga-tkt01.aspx" ></telerik:RadSiteMapNode>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Ticket Issued" NavigateUrl="Page/GA/Ticket/Issued/ga-tkt02.aspx" ></telerik:RadSiteMapNode>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Asset Registration" NavigateUrl="Page/FA/ASSET/fa-as001.aspx" ></telerik:RadSiteMapNode>
+                                        </Nodes>
+                                    </telerik:RadSiteMap>
+                                </ContentTemplate>
+                            </telerik:RadMenuItem>                        
+                            <telerik:RadMenuItem Text="Data Store">
+                                <ContentTemplate>
+                                    <telerik:RadSiteMap runat="server" ID="DS" Skin="Glow" CssClass="itemContent europe" Height="100">
+                                        <DefaultLevelSettings ListLayout-RepeatColumns="2" ListLayout-RepeatDirection="Vertical"></DefaultLevelSettings>
+                                        <Nodes>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Jobsite" NavigateUrl="Page/DS/Project/ds-prj01.aspx"></telerik:RadSiteMapNode>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Education" NavigateUrl="Page/DS/Edu/ds_edu01.aspx" ></telerik:RadSiteMapNode>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Course" NavigateUrl="Page/DS/Course/ds-crs01.aspx" ></telerik:RadSiteMapNode>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Division" NavigateUrl="Page/DS/Division/ds-div01.aspx" ></telerik:RadSiteMapNode>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Department" NavigateUrl="Page/DS/Department/ds-dpt01.aspx" ></telerik:RadSiteMapNode>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Bank" NavigateUrl="Page/DS/Bank/ds-bnk01.aspx" ></telerik:RadSiteMapNode>
+                                        </Nodes>
+                                    </telerik:RadSiteMap>
+                                </ContentTemplate>
+                            </telerik:RadMenuItem>
+                            <telerik:RadMenuItem Text="Setting">
+                                <ContentTemplate>
+                                    <telerik:RadSiteMap runat="server" ID="Security" Skin="Glow" CssClass="itemContent australia" Height="100">
+                                        <DefaultLevelSettings ListLayout-RepeatColumns="1"></DefaultLevelSettings>
+                                        <Nodes>                                        
+                                            <telerik:RadSiteMapNode Visible="true" Text="Change Password" NavigateUrl="*" ></telerik:RadSiteMapNode>
+                                            <telerik:RadSiteMapNode Visible="false" Text="User Setup" NavigateUrl="*" ></telerik:RadSiteMapNode>
+                                        
+                                        </Nodes>
+                                    </telerik:RadSiteMap>
+                                </ContentTemplate>
+                            </telerik:RadMenuItem>
+                        </Items>
+                    </telerik:RadMenu>
+                    <%--<div class="sidebar" id="sidebar" style="background: none repeat scroll 0 0 rgba(0,0,0,0.1) ; background-color:white ; opacity:70;
+                        padding-right:5px; padding-left:5px; margin-top:2px; border-right-style:inset; 
+                        border-right-color:lavender; border-right-width:2px">
+                        <div style="overflow:hidden;">
+                            <table>
+                                <tr>                                
+                                    <td style="vertical-align:top">
+                                        <asp:ContentPlaceHolder ID="FolderContent" runat="server">
+                        
+                                        </asp:ContentPlaceHolder>
+                                    </td>
+                                </tr>
+                            </table>
+                        
+                        
+                        </div>                    
+                    </div>--%>
+                    <div class="section bottom" style=" overflow: auto;" >
+                        <%--<telerik:RadNavigation runat="server" ID="contactNavigation" Skin="Glow" CssClass="secondaryMenu">
+                            <Nodes>
+                                <telerik:NavigationNode ID="NavNode2" Text="MenuName" >
+                                </telerik:NavigationNode>
+                            </Nodes>
+                        </telerik:RadNavigation>--%>
+                        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                        
+                        </asp:ContentPlaceHolder>
+
+                    </div>
+                </div>
+            <%--<div class="tm-click-overlay"></div>--%>
+            <%--<telerik:RadToolTip runat="server" ID="UserProfile" IsClientID="true" EnableShadow="true" HideEvent="Default" Visible="false" TargetControlID="aa">
+                <img src="Images/user-s.png" alt="" />
+                <div class="content"  style="padding:50px 0px 20px 0px">
+                    <span>user@pt-psg.co.id</span>
+                    <span >
+                        <asp:HyperLink id="hl1"  NavigateUrl="~/Login.aspx" Text="Log out" Target="_parent" runat="server"/>
+                        <span class="icon icon-Close"></span>
+                        <span >
+                            <telerik:RadButton RenderMode="Auto" ID="btn_logout" Text="Logout" BorderStyle="None" AutoPostBack="true"
+                                OnClick="btn_logout_Click"  runat="server" Width="100px" Height="43px" Skin="Glow">
+                            </telerik:RadButton>
+                            </span>
+                    </span>                  
+                </div>
+            </telerik:RadToolTip>--%>
+            <div style="border-top-style: solid; border-top-color: yellowgreen; background-color:#3b3a3a; width:100%; 
+                    color:azure;  position:absolute; bottom: 3px">
+                <table>
+                    <tr>
+                        <td style="width:20%"><asp:Label ID="lblServer" runat="server" Visible="false"></asp:Label></td>
+                        <%--<td style="width:30%"><asp:Label ID="lblPeriode" runat="server" Visible="true"></asp:Label></td>--%>
+                        <td style="width:40%"><asp:Label ID="lblUserInfo" runat="server" Visible="true"></asp:Label></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <asp:HiddenField runat="server" ID="nav" />
+
+          
+        <script type="text/javascript">
+            var nav = $get("<%= nav.ClientID %>").value;
+
+            function pageLoad() {
+                if (nav === "mobile") {
+                    $itemMenu = $(".item.menu");
+
+                    $('.rmRootToggle').on("click", function () {
+                        var open = $itemMenu.hasClass("expanded");
+                        if (!open)
+                            $itemMenu.addClass("expanded");
+                        else
+                            $itemMenu.removeClass("expanded");
+                    });
+                }
+
+                $('.home-btn').on("click", function () {
+                    $('form').toggleClass('expandedSlider');
+                });
+
+                setNavigationsMinWidth();
+                initializeInteractions();
+            }
+
+            function initializeInteractions() {
+                $(".user").on("click", function (e) {
+                    toggleToolTip(e);
+                })
+
+                $(".searchBtn").on("click", function () {
+                    showSearch();
+                })
+            }
+
+            function setNavigationsMinWidth() {
+                $(".RadNavigation").each(function () {
+                    var navigation = $find($(this).attr("id"));
+                    navigation._minWidth = 0;
+                    navigation.repaint()
+                })
+            }
+
+            <%--function toggleToolTip(e) {
+                var tooltip = $find("<%=UserProfile.ClientID %>");
+
+                if (!tooltip.isVisible() == true) {
+                    var $node = $(e.currentTarget);
+                    var arrowPosition = $node.offset();
+
+                    tooltip.show();
+                    var popup = tooltip.get_popupElement();
+
+                    positionX = arrowPosition.left - $(popup).outerWidth(true) + $node.outerWidth(true) + 5;
+                    positionY = arrowPosition.top + $node.outerHeight(true) + 3;
+
+                    setTimeout(function () {
+                        $telerik.setLocation(popup, { x: positionX, y: positionY });
+                    }, 20)
+
+                    $("html").on("click", function (e) {
+                    })
+                }
+                else {
+                    tooltip.hide();
+                }
+            }--%>
+
+<%--            function showSearch() {
+                var search = $find($('div.RadSearchBox').attr('id'));
+                var $search = $(search.get_element());
+                var $searchInput = $search.find(".rsbInput");
+                $search.removeClass("hidden");
+                $searchInput.focus();
+
+                setTimeout(function () {
+                    search.repaint();
+
+                    $('html').on("click", function (e) {
+                        hideSearch(e, $search);
+                    });
+                }, 300);
+
+            }
+
+            function hideSearch(e, $search) {
+                var isSearchBoxClicked = $(e.target).parents(".RadSearchBox").length == 1;
+                var isSearchBoxItemClicked = $(e.target).parents(".rsbPopup").length == 1;
+
+                if (isSearchBoxClicked || isSearchBoxItemClicked) {
+                    return
+                }
+
+                $search.addClass("hidden");
+                $('html').off("click");
+            }
+
+
+           unction rowDblClick(sender, eventArgs) {
+                sender.get_masterTableView().editItem(eventArgs.get_itemIndexHierarchical());
+            }
+
+            function ShowPreview(id) {
+                window.radopen("GoodReceive/Standard/inv01h04ReportViewer.aspx?lbm_code=" + id, "PreviewDialog");
+                return false;
+            }
+            function RowDblClick(sender, eventArgs) {
+                Row = eventArgs.get_itemIndexHierarchical();
+            }
+            function callBackFn(arg) {
+                //alert("this is the client-side callback function. The RadAlert returned: " + arg);
+            }
+
+            function ShowInsertForm() {                
+                window.radopen("inv01h01EditForm.aspx", "EditDialogWindows");
+                return false;
+            }
+
+           function ShowEditForm(id, rowIndex) {
+                var grid = $find("<%= RadGrid1.ClientID %>");
+ 
+                var rowControl = grid.get_masterTableView().get_dataItems()[rowIndex].get_element();
+                grid.get_masterTableView().selectItem(rowControl, true);
+ 
+                window.radopen("inv01h01EditForm.aspx?doc_code=" + id, "EditDialogWindows");
+                return false;
+            }
+
+            function openWinFiterTemplate() {
+                var filterDialog = $find("<%=FilterDialogWindows.ClientID%>");
+                filterDialog.show();
+            }
+
+            Sys.Application.add_load(function () {
+            $windowContentDemo.contentTemplateID = "<%=FilterDialogWindows.ClientID%>";
+            $windowContentDemo.templateWindowID = "<%=FilterDialogWindows.ClientID %>";
+            });
+
+           function refreshGrid(arg) {
+                if (!arg) {
+                    $find("<%= RadAjaxManager1.ClientID %>").ajaxRequest("Rebind");
+                }
+                else {
+                    $find("<%= RadAjaxManager1.ClientID %>").ajaxRequest("RebindAndNavigate");
+                }
+
+            }--%>
+
+            function GetRadWindow() {
+                var oWindow = null;
+                if (window.radWindow)
+                    oWindow = window.RadWindow; //Will work in Moz in all cases, including clasic dialog     
+                else if (window.frameElement.radWindow)
+                    oWindow = window.frameElement.radWindow;//IE (and Moz as well)     
+                return oWindow;
+            }
+
+            function Close() {
+                GetRadWindow().Close();
+            }
+
+            function onPopUpShowing(sender, args) {
+                args.get_popUp().className += " popUpEditForm";
+            }
+        </script>
+    </form>
+</body>
+</html>

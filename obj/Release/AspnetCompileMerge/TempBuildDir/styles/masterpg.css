@@ -1,0 +1,113 @@
+﻿#probyt .container {
+    width: 760px;
+    height: 318px;
+    padding: 30px;
+    background: url("Images/background.png") no-repeat;
+    border: 0;
+}
+ 
+    .container .RadMenu {
+        margin: 0 auto;
+        font-size: 16px;
+    }
+ 
+html .container .RadMenu_Glow .rmRootGroup {
+    position: relative;
+    width: 100%;
+    /*padding-left:30%;*/
+}
+ 
+html div.RadMenu_Glow .rmGroup,
+html div.RadMenu_Glow .rmPopup {
+    background: none repeat scroll 0 0 rgba(0,0,0,0.85);    
+    opacity: 86;
+}
+ 
+.container .RadMenu .rmPopup {
+    width: 600px;
+}
+ 
+html .container .RadMenu_Glow .rmHorizontal .rmItem {
+    position: static;
+}
+ 
+.container .RadSiteMap .rsmColumnWrap {
+    margin-bottom: 0px;
+}
+ 
+.container .RadSiteMap_Glow .rsmOneLevel .rsmLink,
+.container .RadSiteMap_Glow .rsmTwoLevels .rsmLevel1 .rsmLink,
+.container .RadSiteMap_Glow .rsmThreeLevels .rsmLevel2 .rsmLink,
+.container .RadSiteMap_Glow .rsmManyLevels .rsmLevel3 .rsmLink {
+    font-size: 14px;
+    color: yellowgreen;
+
+}
+ 
+.container .itemContent {
+    padding: 40px 20px 40px 80px;
+    width: 600px; 
+    /*background-repeat: no-repeat;*/
+}
+ 
+.container .asia {
+    /*background-image: url("../Images/preventive.png");*/
+    background-size:250px 250px;
+    background-position: 100px center;
+    height:500px;
+   
+}
+ 
+.container .africa {
+    /*background-image: url("../Images/barang.png");*/
+    background-size:250px 250px;
+    background-position: center;
+    height:500px;
+}
+ 
+.container .northAmerica {
+    /*background-image: url("../Images/purchasing.png");*/
+    background-size:220px 220px;
+    background-position: center;
+    height:500px;
+}
+ 
+.container .southAmerica {
+    /*background-image: url("../Images/accounting.png");*/
+    background-position: center;
+    background-size:250px 250px;
+    height:500px;
+}
+ 
+.container .europe {
+    /*background-image: url("../Images/data-store.jpg");*/
+    background-size:250px 250px;
+    background-position: center;
+    height:500px;
+    /*padding-left:40px;*/
+}
+ 
+.container .australia {
+    /*background-image: url("Images/australia.png");*/
+    background-position: 40px center;
+    /*padding-left: 250px;
+      padding-top: 40px;*/
+}
+ 
+.container .title {
+    color: #FFFFFF;
+    line-height: 76px;
+    margin-left: 254px;
+    text-decoration: underline;
+    font-size: 14px;
+}
+ 
+.container div.RadSiteMap .rsmItem {
+    color: #FFFFFF;
+    list-style-type: square;
+    margin-left: 5px;
+}
+ 
+.container .rsmColumnWrap {
+    *display: none;
+}

@@ -56,6 +56,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -63,6 +64,12 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Telerik.Reporting, Version=12.1.18.516, Culture=neutral, PublicKeyToken=a9d7983dfcc261be" />
+    <Reference Include="Telerik.ReportViewer.Html5.WebForms, Version=12.1.18.516, Culture=neutral, PublicKeyToken=a9d7983dfcc261be, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SBB\SBB_App\TelerikWebApplication\bin\Telerik.ReportViewer.Html5.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.ReportViewer.WebForms, Version=12.1.18.516, Culture=neutral, PublicKeyToken=a9d7983dfcc261be" />
     <Reference Include="Telerik.Web.Design">
       <HintPath>..\lib\RCAJAX\2018.2.516.45\Telerik.Web.Design.dll</HintPath>
       <Private>True</Private>
@@ -137,10 +144,41 @@
     <Content Include="App_Data\RadCaptcha\X.wav" />
     <Content Include="App_Data\RadCaptcha\Y.wav" />
     <Content Include="App_Data\RadCaptcha\Z.wav" />
+    <Content Include="bin\EnvDTE.dll" />
+    <Content Include="bin\Newtonsoft.Json.dll" />
+    <Content Include="bin\PRIMA_HRIS.dll" />
+    <Content Include="bin\PRIMA_HRIS.pdb" />
+    <Content Include="bin\stdole.dll" />
+    <Content Include="bin\Telerik.Web.Design.dll" />
+    <Content Include="bin\Telerik.Web.Spreadsheet.dll" />
+    <Content Include="bin\Telerik.Web.Spreadsheet.xml" />
+    <Content Include="bin\Telerik.Web.UI.dll" />
+    <Content Include="bin\Telerik.Web.UI.Skins.dll" />
+    <Content Include="bin\Telerik.Web.UI.xml" />
+    <Content Include="bin\Telerik.Windows.Documents.Core.dll" />
+    <Content Include="bin\Telerik.Windows.Documents.Core.xml" />
+    <Content Include="bin\Telerik.Windows.Documents.Flow.dll" />
+    <Content Include="bin\Telerik.Windows.Documents.Flow.xml" />
+    <Content Include="bin\Telerik.Windows.Documents.Spreadsheet.dll" />
+    <Content Include="bin\Telerik.Windows.Documents.Spreadsheet.FormatProviders.OpenXml.dll" />
+    <Content Include="bin\Telerik.Windows.Documents.Spreadsheet.FormatProviders.OpenXml.xml" />
+    <Content Include="bin\Telerik.Windows.Documents.Spreadsheet.xml" />
+    <Content Include="bin\Telerik.Windows.Zip.dll" />
+    <Content Include="bin\Telerik.Windows.Zip.xml" />
     <Content Include="Default.aspx" />
     <Content Include="Home\index.html" />
     <Content Include="Home\Login.aspx" />
     <Content Include="Home\style.css" />
+    <Content Include="images\cetak.png" />
+    <Content Include="images\header_about.gif" />
+    <Content Include="images\hero-bg.jpg" />
+    <Content Include="images\login-img.jpg" />
+    <Content Include="images\logo.jpg" />
+    <Content Include="images\logout.png" />
+    <Content Include="images\prima.png" />
+    <Content Include="images\signup-img.jpg" />
+    <Content Include="index.html" />
+    <Content Include="Login.aspx" />
     <Content Include="Main.aspx" />
     <Content Include="MasterPage.Master" />
     <Content Include="MasterPageSingleMenu.Master" />
@@ -173,12 +211,15 @@
     <Content Include="Page\DS\Project\ds-prj01.aspx" />
     <Content Include="Page\FA\ASSET\fa-as001.aspx" />
     <Content Include="Page\GA\Fpp\ga-fpp01.aspx" />
+    <Content Include="Page\GA\Fpp\preview.aspx" />
     <Content Include="Page\GA\Ticket\Issued\ga-tkt02.aspx" />
     <Content Include="Page\GA\Ticket\Request\ga-tkt01.aspx" />
     <Content Include="Page\PA\Employee\pa-emp01.aspx" />
     <Content Include="Page\PA\Employee\pa-emp02.aspx" />
     <Content Include="Page\PA\Employee\pa-emp03.aspx" />
     <Content Include="scripts\jquery-1.9.1.min.js" />
+    <Content Include="scripts\Login-js.js" />
+    <Content Include="scripts\script.js" />
     <Content Include="scripts\scripts.js" />
     <Content Include="styles\base.css" />
     <Content Include="styles\custom-cs.css" />
@@ -219,6 +260,13 @@
     </Compile>
     <Compile Include="ListView.aspx.designer.cs">
       <DependentUpon>ListView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Main.aspx.cs">
       <DependentUpon>Main.aspx</DependentUpon>
@@ -304,6 +352,13 @@
     <Compile Include="Page\GA\Fpp\ga-fpp01.aspx.designer.cs">
       <DependentUpon>ga-fpp01.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Page\GA\Fpp\preview.aspx.cs">
+      <DependentUpon>preview.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Page\GA\Fpp\preview.aspx.designer.cs">
+      <DependentUpon>preview.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Page\GA\Ticket\Issued\ga-tkt02.aspx.cs">
       <DependentUpon>ga-tkt02.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -340,6 +395,12 @@
       <DependentUpon>pa-emp03.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\slip-fpp.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Report\slip-fpp.Designer.cs">
+      <DependentUpon>slip-fpp.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\RadSpell\de-DE.tdf" />
@@ -352,9 +413,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="styles\masterpg.css" />
+    <Content Include="styles\Style-login.css" />
+    <Content Include="styles\style.css" />
     <Content Include="web.config" />
     <Content Include="Main.Master" />
+    <Content Include="bin\PRIMA_HRIS.dll.config" />
     <None Include="Properties\PublishProfiles\PRIMAHRIS.pubxml" />
+    <Content Include="Report\slip-fpp.trdp" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -364,6 +429,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Report\slip-fpp.resx">
+      <DependentUpon>slip-fpp.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Page\DS\EmpCat\" />

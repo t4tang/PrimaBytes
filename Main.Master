@@ -66,14 +66,21 @@
 
         <div class="page" style="background-color:#272626; height:100%;">
         <%--<div class="full-height" style="background-color:#303d3f" > --%>
-            <div class="main-header clear"  style="border-bottom-style:solid; border-bottom-color:darkgrey; border-bottom-width:0px; margin-bottom:2px; height:45px; 
+            <div class="main-header clear"  style="border-bottom-style:solid; border-bottom-color:darkgrey; border-bottom-width:0px; margin-bottom:0px; height:45px; 
                    background-image:url(../../../../images/header_about.gif); padding:15px 0px 0px 10px">
                 <div class="home-btn">
                     <span class="icon">
                         <telerik:RadLabel runat="server" Text="PRIMA" style="font-weight: bold; 
-                        color:yellowgreen; font-size:26px;"></telerik:RadLabel> 
-                        <telerik:RadLabel runat="server" Text="Bytes" style="font-weight:lighter; 
-                        color:orangered; font-size:26px; font-family:Mistral;"></telerik:RadLabel>
+                        color:yellowgreen; font-size:26px; vertical-align:top; "></telerik:RadLabel> 
+                        <telerik:RadLabel runat="server" Text="Connect" style="font-weight:lighter; 
+                        color:orangered; font-size:26px; font-family:Mistral; vertical-align:top;"></telerik:RadLabel>
+                    </span>
+                    <span class="icon" style="float:right; padding-right:30px">
+                        <a class="logo" href="../../../Login.aspx">
+                            <%--<label style="font-size:x-small; font-weight:lighter; color:white; padding-bottom:60px">Logout</label>--%>
+                            <img src="../../../images/logout.png" height="27" width="25"  alt="logo" />
+                          
+                        </a>
                     </span>
                 </div>
                 <asp:UpdatePanel runat="server">
@@ -115,7 +122,7 @@
                 </asp:UpdatePanel>--%>
         <%--</div>--%>
             <div class="container" style="border-top-color:greenyellow; border-top-style:solid; border-top-width:3px; margin-top:2px;">                
-                    <telerik:RadMenu RenderMode="Lightweight" runat="server" ID="RadMenu1" Skin="Glow" style=" z-index:5900; " >
+                    <telerik:RadMenu RenderMode="Lightweight" runat="server" ID="RadMenu1" Skin="Glow" style=" z-index:1000; " >
                         <DefaultGroupSettings Height="270px" />
                         <Items>
                             <telerik:RadMenuItem Text="Personal Admin" >
@@ -145,7 +152,7 @@
                                     <telerik:RadSiteMap runat="server" ID="PY" Skin="Glow" CssClass="itemContent northAmerica" Height="100">
                                         <DefaultLevelSettings ListLayout-RepeatColumns="1" ListLayout-RepeatDirection="Vertical"></DefaultLevelSettings>
                                         <Nodes>
-                                            <telerik:RadSiteMapNode Visible="true" Text="Financing Submission (FPP)" NavigateUrl="*"></telerik:RadSiteMapNode>
+                                            <telerik:RadSiteMapNode Visible="true" Text="Financing Submission (FPP)" NavigateUrl="Page/GA/Fpp/ga-fpp01.aspx"></telerik:RadSiteMapNode>
                                             <telerik:RadSiteMapNode Visible="true" Text="Ticket Request" NavigateUrl="Page/GA/Ticket/Request/ga-tkt01.aspx" ></telerik:RadSiteMapNode>
                                             <telerik:RadSiteMapNode Visible="true" Text="Ticket Issued" NavigateUrl="Page/GA/Ticket/Issued/ga-tkt02.aspx" ></telerik:RadSiteMapNode>
                                             <telerik:RadSiteMapNode Visible="true" Text="Asset Registration" NavigateUrl="Page/FA/ASSET/fa-as001.aspx" ></telerik:RadSiteMapNode>

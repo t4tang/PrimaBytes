@@ -141,6 +141,32 @@ namespace PRIMA_HRIS.Page.PA.Employee
         {
 
         }
+        private void SaveImageToDatabase(byte[] imageBytes)
+        {
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            cmd.CommandText = "UPDATE TrEmployee SET Photo = @Photo";
+            cmd.Parameters.AddWithValue("@Photo", imageBytes);
+            con.Close();
+
+
+            //string connectionString = "your_connection_string_here";
+            //string query = "INSERT INTO Images (ImageData) VALUES (@ImageData)";
+
+            //using (SqlConnection connection = new SqlConnection(connectionString))
+            //{
+            //    using (SqlCommand command = new SqlCommand(query, connection))
+            //    {
+            //        command.Parameters.AddWithValue("@ImageData", imageBytes);
+            //        connection.Open();
+            //        command.ExecuteNonQuery();
+            //    }
+            //}
+
+            //lblMessage.Text = "Image uploaded successfully!";
+        }
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
@@ -213,6 +239,9 @@ namespace PRIMA_HRIS.Page.PA.Employee
             RadGrid rg_pendidikan = (RadGrid)item.FindControl("rg_pendidikan");
             RadGrid rg_training = (RadGrid)item.FindControl("rg_training");
             RadGrid rg_lisensi = (RadGrid)item.FindControl("rg_lisensi");
+
+            RadLabel lblMessage = (RadLabel)item.FindControl("lblMessage");
+            RadAsyncUpload RadAsyncUpload1 = (RadAsyncUpload)item.FindControl("RadAsyncUpload1");
 
             try
             {
@@ -371,6 +400,51 @@ namespace PRIMA_HRIS.Page.PA.Employee
                 cmd.Parameters.AddWithValue("@SpouseRemark", DBNull.Value);
                 cmd.Parameters.AddWithValue("@costingCode", cb_costing.SelectedValue);
                 cmd.ExecuteNonQuery();
+
+                if (RadAsyncUpload1.UploadedFiles.Count > 0)
+                {
+                    UploadedFile uploadedFile = RadAsyncUpload1.UploadedFiles[0];
+                    byte[] imageBytes;
+                    using (BinaryReader br = new BinaryReader(uploadedFile.InputStream))
+                    {
+                        imageBytes = br.ReadBytes((int)uploadedFile.InputStream.Length);
+                    }
+
+                    //SaveImageToDatabase(imageBytes);
+                    cmd = new SqlCommand();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection = con;
+                    cmd.CommandText = "UPDATE TrEmployee SET Photo = @Photo WHERE EmployeeNo = @EmployeeNo";
+                    cmd.Parameters.AddWithValue("@Photo", imageBytes);
+                    cmd.Parameters.AddWithValue("@EmployeeNo", txt_nik.Text);
+                    cmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    lblMessage.Text = "Please select a file to upload.";
+                }
+
+                //if (FileUpload1.HasFile)
+                //{
+                //    byte[] imageBytes;
+                //    using (BinaryReader br = new BinaryReader(FileUpload1.PostedFile.InputStream))
+                //    {
+                //        imageBytes = br.ReadBytes((int)FileUpload1.PostedFile.InputStream.Length);
+                //    }
+
+                //    SaveImageToDatabase(imageBytes);
+
+                //    cmd = new SqlCommand();
+                //    cmd.CommandType = CommandType.Text;
+                //    cmd.Connection = con;
+                //    cmd.CommandText = "UPDATE TrEmployee SET Photo = @Photo WHERE EmployeeNo = @EmployeeNo";
+                //    cmd.Parameters.AddWithValue("@Photo", imageBytes);
+                //    cmd.Parameters.AddWithValue("@EmployeeNo", txt_nik.Text);
+                //}
+                //else
+                //{
+                //    lblMessage.Text = "Please select a file to upload.";
+                //}
             }
             catch (Exception ex)
             {
@@ -2058,51 +2132,7 @@ namespace PRIMA_HRIS.Page.PA.Employee
             con.Close();
         }
         #endregion
-
-       
-        protected void btn_upload_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                con.Open();
-                cmd = new SqlCommand();
-                cmd.CommandType = CommandType.Text;
-                cmd.Connection = con;
-                cmd.CommandText = "truncate table UplEmpData";
-                cmd.ExecuteNonQuery();
-                con.Close();
-            }
-            catch (Exception ex)
-            {
-                con.Close();
-                Response.Write("<font color='red'>" + ex.Message + "</font>");
-            }
-
-
-            //string CurrentFilePath = Path.GetFullPath(FileUpload1.PostedFile.FileName);
-            //InsertExcelRecords(CurrentFilePath);
-
-            string filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".xlsx");
-            FileUpload1.SaveAs(filePath);
-            
-            try
-            {
-                InsertExcelRecords(filePath);
-            }
-            finally
-            {
-                File.Delete(filePath);
-            }
-        }
-
-        OleDbConnection Econ;
-        string constr, Query, sqlconn;
-        private void ExcelConn(string FilePath)
-        {
-            constr = string.Format(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=""Excel 12.0 Xml;HDR=YES;""", FilePath);
-            Econ = new OleDbConnection(constr);
-
-        }
+        #region Bank
         private static DataTable GetBank(string text)
         {
             SqlDataAdapter adapter = new SqlDataAdapter("SELECT SourceBankCode, SourceBankName FROM MsBank " +
@@ -2162,7 +2192,7 @@ namespace PRIMA_HRIS.Page.PA.Employee
             dr.Close();
             con.Close();
         }
-
+        #endregion
         protected void cb_costing_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
         {
 
@@ -2317,6 +2347,53 @@ namespace PRIMA_HRIS.Page.PA.Employee
             con.Close();
         }
 
+
+
+
+
+        protected void btn_upload_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                con.Open();
+                cmd = new SqlCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                cmd.CommandText = "truncate table UplEmpData";
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                con.Close();
+                Response.Write("<font color='red'>" + ex.Message + "</font>");
+            }
+
+
+            //string CurrentFilePath = Path.GetFullPath(FileUpload1.PostedFile.FileName);
+            //InsertExcelRecords(CurrentFilePath);
+
+            string filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".xlsx");
+            FileUpload1.SaveAs(filePath);
+
+            try
+            {
+                InsertExcelRecords(filePath);
+            }
+            finally
+            {
+                File.Delete(filePath);
+            }
+        }
+
+        OleDbConnection Econ;
+        string constr, Query, sqlconn;
+        private void ExcelConn(string FilePath)
+        {
+            constr = string.Format(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=""Excel 12.0 Xml;HDR=YES;""", FilePath);
+            Econ = new OleDbConnection(constr);
+
+        }
         private void connection()
         {
             sqlconn = ConfigurationManager.ConnectionStrings["DbConString"].ConnectionString;
